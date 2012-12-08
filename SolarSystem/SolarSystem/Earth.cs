@@ -28,7 +28,7 @@ namespace SolarSystem
 
             Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
 
-            ModelName = "cube";
+            ModelName = "sphere";
 
             DiffuseColor = Color.Blue.ToVector3();
 
@@ -57,7 +57,7 @@ namespace SolarSystem
             if (Spin > MathHelper.TwoPi) Spin -= MathHelper.TwoPi;
             rotationAxis.Normalize();
             LocalTransform = Scale*Matrix.CreateRotationZ(eclipticObliquity)*
-                             Matrix.CreateFromAxisAngle(rotationAxis, Spin);
+                             Matrix.CreateFromAxisAngle(rotationAxis, -Spin);
         }
 
         public override void Draw(GameTime gameTime)
