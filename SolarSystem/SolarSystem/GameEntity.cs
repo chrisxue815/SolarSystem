@@ -19,6 +19,7 @@ namespace SolarSystem
         public Model Model { get; set; }
         public Vector3 DiffuseColor { get; set; }
         public Matrix LocalTransform { get; set; }
+        public Matrix Scale { get; set; }
 
         public GameEntity()
         {

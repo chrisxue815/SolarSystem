@@ -10,7 +10,8 @@ namespace SolarSystem
         {
             var pos = new Vector3(x, y, z);
 
-            LocalTransform = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
+            Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
+            LocalTransform = Scale;
 
             ModelName = "sphere";
 
