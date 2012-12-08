@@ -4,9 +4,7 @@ namespace SolarSystem
 {
     public class Sun : GameEntity
     {
-        public const float Mass = 1.9891e30f;
-        //public const float Radius = 6.96e8f;  //TODO
-        public const float Radius = 10f;
+        public const float Radius = 15f;
 
         public Sun(float x, float y, float z)
         {
@@ -15,6 +13,8 @@ namespace SolarSystem
             LocalTransform = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
 
             ModelName = "sphere";
+
+            DiffuseColor = Color.Yellow.ToVector3();
         }
     }
 }

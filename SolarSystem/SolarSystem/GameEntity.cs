@@ -24,8 +24,6 @@ namespace SolarSystem
         {
             Up = new Vector3(0, 1, 0);
             Basis = new Vector3(0, 0, -1);
-            var random = new Random();
-            DiffuseColor = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
         }
 
         public virtual void LoadContent()
@@ -35,7 +33,6 @@ namespace SolarSystem
 
         public virtual void Update(GameTime gameTime)
         {
-            
         }
 
         public virtual void Draw(GameTime gameTime)
