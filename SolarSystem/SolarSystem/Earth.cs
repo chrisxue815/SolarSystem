@@ -26,7 +26,7 @@ namespace SolarSystem
         }
 
         // rotation
-        public const float RotationPeriod = 1f;
+        public const float RotationPeriod = 0.99726956632908f;
         public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
 
         public float Rotation { get; set; }

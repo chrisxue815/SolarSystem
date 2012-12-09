@@ -50,12 +50,15 @@ namespace SolarSystem
                 }
             }
 
-            //var secsFromMidday = Game.Earth.Revolution * 86400 * Earth.RevolutionPeriod / MathHelper.TwoPi;
-            secsFromMidday += Game.Earth.Rotation * 86400 / MathHelper.TwoPi;
-
+            var minsFromMidday = Game.Earth.Revolution * 1440 * Earth.RevolutionPeriod / MathHelper.TwoPi;
+            minsFromMidday += Game.Earth.Rotation * 1440 * Earth.RotationPeriod / MathHelper.TwoPi;
+            minsFromMidday += 720;
+            minsFromMidday %= 1440;
+            var hour = (int)(minsFromMidday / 60);
+            var minute = (int)(minsFromMidday % 60);
 
             var date = string.Format("Date: {0} {1}", NamesOfMonths[month], day);
-            var time = string.Format("Time: {0}:{1}:{2}", 0, 0, 0);
+            var time = string.Format("Time: {0:D2}:{1:D2}", hour, minute);
 
             Info.Add(date);
             Info.Add(time);
