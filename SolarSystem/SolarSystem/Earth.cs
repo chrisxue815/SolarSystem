@@ -30,6 +30,7 @@ namespace SolarSystem
         public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
 
         public float Rotation { get; set; }
+        private float RotationInFastSpeed { get; set; }
         private Vector3 RotationAxis { get; set; }
 
         private Sun Sun { get; set; }
@@ -75,6 +76,7 @@ namespace SolarSystem
         {
             Sun = Game.Sun;
             Rotation = 0;
+            RotationInFastSpeed = 0;
             RotationAxisPointList = new VertexPositionColor[2];
 
             // vernal equinox
@@ -132,11 +134,20 @@ namespace SolarSystem
 
             // rotation
             var rotationAngle = RotationAngularSpeed * dt;
-            if (rotationAngle > MathHelper.Pi) rotationAngle = 1f;
             Rotation += rotationAngle;
-            if (Rotation > MathHelper.TwoPi) Rotation %= MathHelper.TwoPi;
-            LocalTransform = Scale*Matrix.CreateRotationZ(EclipticObliquity)*
-                             Matrix.CreateFromAxisAngle(Up, Rotation);
+
+            if (rotationAngle > MathHelper.Pi)
+            {
+                RotationInFastSpeed += 1f;
+                if (RotationInFastSpeed > MathHelper.TwoPi) RotationInFastSpeed %= MathHelper.TwoPi;
+                LocalTransform = Scale*Matrix.CreateRotationZ(EclipticObliquity)*
+                                 Matrix.CreateFromAxisAngle(Up, RotationInFastSpeed);
+            }
+            else
+            {
+                LocalTransform = Scale * Matrix.CreateRotationZ(EclipticObliquity) *
+                 Matrix.CreateFromAxisAngle(Up, Rotation);
+            }
 
             InitRotPointList();
 

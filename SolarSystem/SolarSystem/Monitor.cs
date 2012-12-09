@@ -29,7 +29,7 @@ namespace SolarSystem
         {
             Info.Clear();
 
-            var dayFromVernalEquinox = (int)(Game.Earth.Revolution / MathHelper.TwoPi * Earth.RevolutionPeriod);
+            var dayFromVernalEquinox = (int)(Game.Earth.Revolution / Earth.RevolutionAngularSpeed);
             var month = 2;
             var day = 21;
 
@@ -50,8 +50,7 @@ namespace SolarSystem
                 }
             }
 
-            var minsFromMidday = Game.Earth.Revolution * 1440 * Earth.RevolutionPeriod / MathHelper.TwoPi;
-            minsFromMidday += Game.Earth.Rotation * 1440 * Earth.RotationPeriod / MathHelper.TwoPi;
+            var minsFromMidday = Game.Earth.Revolution * 1440 / Earth.RevolutionAngularSpeed;
             minsFromMidday += 720;
             minsFromMidday %= 1440;
             var hour = (int)(minsFromMidday / 60);
