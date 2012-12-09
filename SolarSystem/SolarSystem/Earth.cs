@@ -8,7 +8,8 @@ namespace SolarSystem
     {
         private Sun Sun { get; set; }
         private float Spin { get; set; }
-        private VertexPositionColor[] pointList = new VertexPositionColor[2];
+        private Vector3 RelativePosition { get; set; }
+        private VertexPositionColor[] RotationAxisPointList { get; set; }
 
         public const float Radius = 10f;
         public const float RevolutionRadius = 100f;
@@ -23,6 +24,7 @@ namespace SolarSystem
         {
             Sun = sun;
             Spin = 0;
+            RotationAxisPointList = new VertexPositionColor[2];
 
             Position = new Vector3(Sun.Position.X, Sun.Position.Y, Sun.Position.Z - RevolutionRadius);
 
@@ -41,18 +43,20 @@ namespace SolarSystem
             // delta time
             var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            var relativePosition = Position - Sun.Position;
+            // revolution
             var angle = RevolutionAngularSpeed * dt;
-            var relativePosition2 = Vector3.Transform(relativePosition, Matrix.CreateRotationY(angle));
-            Position = relativePosition2 + Sun.Position;
+            RelativePosition = Vector3.Transform(RelativePosition, Matrix.CreateRotationY(angle));
+            Position = RelativePosition + Sun.Position;
 
+            // rotation axis
             const float eclipticObliquity = -0.409f;
             var rotationAxis = Vector3.Transform(Up, Matrix.CreateRotationZ(eclipticObliquity));
             rotationAxis.Normalize();
             rotationAxis *= Radius * 2f;
-            pointList[0] = new VertexPositionColor(Position + rotationAxis, Color.Red);
-            pointList[1] = new VertexPositionColor(Position - rotationAxis, Color.Red);
+            RotationAxisPointList[0] = new VertexPositionColor(Position + rotationAxis, Color.Red);
+            RotationAxisPointList[1] = new VertexPositionColor(Position - rotationAxis, Color.Red);
 
+            // rotation
             Spin += RotationAngularSpeed * dt;
             if (Spin > MathHelper.TwoPi) Spin -= MathHelper.TwoPi;
             rotationAxis.Normalize();
@@ -62,6 +66,7 @@ namespace SolarSystem
 
         public override void Draw(GameTime gameTime)
         {
+            // draw rotation axis
             BasicEffect.View = Game1.Instance.Camera.View;
             BasicEffect.Projection = Game1.Instance.Camera.Projection;
 
@@ -69,9 +74,10 @@ namespace SolarSystem
             {
                 pass.Apply();
                 Game1.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
-                                                                 pointList, 0, 1);
+                                                                 RotationAxisPointList, 0, 1);
             }
 
+            // draw model
             if (Model != null)
             {
                 foreach (var mesh in Model.Meshes)
