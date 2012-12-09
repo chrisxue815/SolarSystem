@@ -35,9 +35,11 @@ namespace SolarSystem
         {
             var sun = new Sun(0, 0, 0);
             var earth = new Earth(sun);
+            var moon = new Moon(earth);
 
             Children.Add(sun);
             Children.Add(earth);
+            Children.Add(moon);
 
             base.Initialize();
         }
