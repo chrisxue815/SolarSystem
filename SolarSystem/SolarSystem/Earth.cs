@@ -80,7 +80,7 @@ namespace SolarSystem
                 pass.Apply();
                 Game1.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                                  pointList, 0, 1);
-                DrawLineStrip();
+                DrawRevolutionOrbit();
             }
 
             if (Model != null)
@@ -142,7 +142,7 @@ namespace SolarSystem
         }
 
         /* Draw lines to connect two points continuously */
-        private void DrawLineStrip()
+        private void DrawRevolutionOrbit()
         {
             for (int i = 0; i < orbitPointList.Length; i++)
                 orbitPointList[i].Color = Color.Red;
