@@ -226,7 +226,7 @@ namespace SolarSystem
                 revOrbitPointList[i] = new VertexPositionColor(new Vector3(x, Position.Y, z), Color.White);
             }
             // The last point is the same with the starting point
-            revOrbitPointList[points - 1] = new VertexPositionColor(new Vector3(Sun.Position.X, Position.Y, RevolutionRadius), Color.White);
+            revOrbitPointList[points - 1] = revOrbitPointList[0];
 
             // Initialize the vertex buffer, allocating memory for each vertex.
             vertexBuffer = new VertexBuffer(Game1.Instance.GraphicsDevice, typeof(VertexPositionNormalTexture),

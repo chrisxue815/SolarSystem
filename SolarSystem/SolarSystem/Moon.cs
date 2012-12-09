@@ -107,7 +107,19 @@ namespace SolarSystem
             base.Draw(dt);
         }
 
-        /* Initialize point list on the orbit to be drawn */
+        private void InitLineStrip()
+        {
+            // Initialize an array of indices of type short.
+            lineStripIndices = new short[points];
+
+            // Populate the array with references to indices in the vertex buffer.
+            for (int i = 0; i < points; i++)
+            {
+                lineStripIndices[i] = (short)(i);
+            }
+        }
+
+        /* Initialize point list on the revolution orbit to be drawn */
         private void InitRevPointList()
         {
             vertexDeclaration = new VertexDeclaration(VertexPositionTexture.VertexDeclaration.GetVertexElements());
@@ -124,7 +136,7 @@ namespace SolarSystem
                 revOrbitPointList[i] = new VertexPositionColor(new Vector3(x, 0, z), Color.White);
             }
             // The last point is the same with the starting point
-            revOrbitPointList[points - 1] = new VertexPositionColor(new Vector3(Earth.Position.X, 0, Earth.Position.Z + RevolutionRadius), Color.White);
+            revOrbitPointList[points - 1] = revOrbitPointList[0];
 
             // Initialize the vertex buffer, allocating memory for each vertex.
             vertexBuffer = new VertexBuffer(Game1.Instance.GraphicsDevice, typeof(VertexPositionNormalTexture),
@@ -134,19 +146,7 @@ namespace SolarSystem
             vertexBuffer.SetData<VertexPositionColor>(revOrbitPointList);
         }
 
-        private void InitLineStrip()
-        {
-            // Initialize an array of indices of type short.
-            lineStripIndices = new short[points];
-
-            // Populate the array with references to indices in the vertex buffer.
-            for (int i = 0; i < points; i++)
-            {
-                lineStripIndices[i] = (short)(i);
-            }
-        }
-
-        /* Draw lines to connect two points continuously */
+        /* Draw lines to connect two points continuously for revolution orbit */
         private void DrawRevolutionOrbit()
         {
             for (int i = 0; i < revOrbitPointList.Length; i++)
