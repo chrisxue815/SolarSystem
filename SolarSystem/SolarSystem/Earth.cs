@@ -167,10 +167,9 @@ namespace SolarSystem
                 {
                     Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                            RotationAxisPointList, 0, 1);
+                    // Draw the Earth's rotation orbit
+                    DrawRotationOrbit();
                 }
-
-                // Draw the Earth's rotation orbit
-                DrawRotationOrbit();
             }
 
             // draw model

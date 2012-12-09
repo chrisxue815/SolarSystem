@@ -16,6 +16,7 @@ namespace SolarSystem
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
+        //public Texture2D Background { get; private set; }
 
         public static Game1 Instance { get; private set; }
 
@@ -55,6 +56,8 @@ namespace SolarSystem
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //Background = Content.Load<Texture2D>("space");
+
             foreach (var child in Children)
             {
                 child.LoadContent();
@@ -86,6 +89,9 @@ namespace SolarSystem
             GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.Begin();
+
+            //SpriteBatch.Draw(Background, new Vector2(0, 0), Color.White);
+            //SpriteBatch.Draw(Background, new Rectangle(100, 100, 50, 80), Color.White);
 
             var state = new DepthStencilState {DepthBufferEnable = true};
             GraphicsDevice.DepthStencilState = state;

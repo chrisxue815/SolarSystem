@@ -108,10 +108,9 @@ namespace SolarSystem
                 {
                     Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                            pointList, 0, 1);
+                    // Draw the Moon's rotation orbit
+                    DrawRotationOrbit();
                 }
-
-                // Draw the Moon's rotation orbit
-                DrawRotationOrbit();
             }
 
             base.Draw(dt);
