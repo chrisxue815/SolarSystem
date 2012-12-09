@@ -7,6 +7,8 @@ namespace SolarSystem
     {
         private Sun Sun { get; set; }
         private float Spin { get; set; }
+        private Vector3 RotationAxisHalf { get; set; }
+
         private Vector3 relativePosition;
         private Vector3 RelativePosition
         {
@@ -20,12 +22,14 @@ namespace SolarSystem
 
         private VertexPositionColor[] RotationAxisPointList { get; set; }
 
+        // contents
         private Effect Effect { get; set; }
         private Texture2D DayTexture { get; set; }
         private Texture2D NightTexture { get; set; }
         private Texture2D CloudTexture { get; set; }
         private Texture2D NormalMapTexture { get; set; }
 
+        // rendering
         private Vector4 globalAmbient = new Vector4(0.2f, 0.2f, 0.2f, 1.0f);
         private Vector4 sunlightDirection = new Vector4(Vector3.Forward, 0.0f);
         private Vector4 sunlightColor = new Vector4(1.0f, 0.941f, 0.898f, 1.0f);
@@ -36,18 +40,20 @@ namespace SolarSystem
         private float cloudStrength = 1.15f;
         private BoundingSphere bounds;
 
+        // constants
         public const float Radius = 2f;
         public const float RevolutionRadius = 100f;
         public const float RevolutionPeriod = 10f;
         public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
         public const float RotationPeriod = RevolutionPeriod / 365 * 100;
         public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
+        public const float EclipticObliquity = -0.409f;
 
-        private static readonly BasicEffect BasicEffect = new BasicEffect(Game1.Instance.GraphicsDevice);
+        private BasicEffect BasicEffect { get; set; }
 
-        public Earth(Sun sun)
+        public Earth()
         {
-            Sun = sun;
+            Sun = Game.Sun;
             Spin = 0;
             RotationAxisPointList = new VertexPositionColor[2];
 
@@ -55,18 +61,26 @@ namespace SolarSystem
 
             Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
 
+            BasicEffect = new BasicEffect(Game.GraphicsDevice);
             BasicEffect.VertexColorEnabled = true;
             BasicEffect.World = Matrix.Identity;
+
+            // up
+            Up = Vector3.Transform(Vector3.Up, Matrix.CreateRotationZ(EclipticObliquity));
+            Up.Normalize();
+
+            // rotation axis
+            RotationAxisHalf = Up * Radius * 7f;
         }
 
         public override void LoadContent()
         {
-            Model = Game1.Instance.Content.Load<Model>(@"Models\earth");
-            Effect = Game1.Instance.Content.Load<Effect>(@"Effects\earth");
-            DayTexture = Game1.Instance.Content.Load<Texture2D>(@"Textures\earth_day_color_spec");
-            NightTexture = Game1.Instance.Content.Load<Texture2D>(@"Textures\earth_night_color");
-            CloudTexture = Game1.Instance.Content.Load<Texture2D>(@"Textures\earth_clouds_alpha");
-            NormalMapTexture = Game1.Instance.Content.Load<Texture2D>(@"Textures\earth_nrm");
+            Model = Game.Content.Load<Model>(@"Models\earth");
+            Effect = Game.Content.Load<Effect>(@"Effects\earth");
+            DayTexture = Game.Content.Load<Texture2D>(@"Textures\earth_day_color_spec");
+            NightTexture = Game.Content.Load<Texture2D>(@"Textures\earth_night_color");
+            CloudTexture = Game.Content.Load<Texture2D>(@"Textures\earth_clouds_alpha");
+            NormalMapTexture = Game.Content.Load<Texture2D>(@"Textures\earth_nrm");
 
             // Calculate the bounding sphere of the Earth model and bind the
             // custom Earth effect file to the model.
@@ -89,20 +103,16 @@ namespace SolarSystem
             RelativePosition = Vector3.Transform(RelativePosition, Matrix.CreateRotationY(angle));
 
             // rotation axis
-            const float eclipticObliquity = -0.409f;
-            var rotationAxis = Vector3.Transform(Up, Matrix.CreateRotationZ(eclipticObliquity));
-            rotationAxis.Normalize();
-            rotationAxis *= Radius * 10f;
-            RotationAxisPointList[0] = new VertexPositionColor(Position + rotationAxis, Color.Red);
-            RotationAxisPointList[1] = new VertexPositionColor(Position - rotationAxis, Color.Red);
+            RotationAxisPointList[0] = new VertexPositionColor(Position + RotationAxisHalf, Color.Red);
+            RotationAxisPointList[1] = new VertexPositionColor(Position - RotationAxisHalf, Color.Red);
 
             // rotation
             Spin += RotationAngularSpeed * dt;
             if (Spin > MathHelper.TwoPi) Spin -= MathHelper.TwoPi;
-            rotationAxis.Normalize();
-            LocalTransform = Scale*Matrix.CreateRotationZ(eclipticObliquity)*
-                             Matrix.CreateFromAxisAngle(rotationAxis, Spin);
+            LocalTransform = Scale * Matrix.CreateRotationZ(EclipticObliquity) *
+                             Matrix.CreateFromAxisAngle(Up, Spin);
 
+            // sunlight direction
             var fromSun = Position - Sun.Position;
             fromSun.Normalize();
             sunlightDirection = new Vector4(fromSun, 0);
@@ -111,13 +121,13 @@ namespace SolarSystem
         public override void Draw(GameTime gameTime)
         {
             // draw rotation axis
-            BasicEffect.View = Game1.Instance.Camera.View;
-            BasicEffect.Projection = Game1.Instance.Camera.Projection;
+            BasicEffect.View = Game.Camera.View;
+            BasicEffect.Projection = Game.Camera.Projection;
 
             foreach (var pass in BasicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                Game1.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
+                Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                                  RotationAxisPointList, 0, 1);
             }
 
@@ -132,9 +142,9 @@ namespace SolarSystem
                         e.Parameters["cloudStrength"].SetValue(cloudStrength);
 
                         e.Parameters["world"].SetValue(LocalTransform * Matrix.CreateTranslation(Position));
-                        e.Parameters["view"].SetValue(Game1.Instance.Camera.View);
-                        e.Parameters["projection"].SetValue(Game1.Instance.Camera.Projection);
-                        e.Parameters["cameraPos"].SetValue(new Vector4(Game1.Instance.Camera.Position, 1.0f));
+                        e.Parameters["view"].SetValue(Game.Camera.View);
+                        e.Parameters["projection"].SetValue(Game.Camera.Projection);
+                        e.Parameters["cameraPos"].SetValue(new Vector4(Game.Camera.Position, 1.0f));
                         e.Parameters["globalAmbient"].SetValue(globalAmbient);
                         e.Parameters["lightDir"].SetValue(sunlightDirection);
                         e.Parameters["lightColor"].SetValue(sunlightColor);

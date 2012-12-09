@@ -30,8 +30,8 @@ namespace SolarSystem
                         effect.EnableDefaultLighting();
                         effect.DiffuseColor = DiffuseColor;
                         effect.World = LocalTransform * Matrix.CreateTranslation(Position);
-                        effect.Projection = Game1.Instance.Camera.Projection;
-                        effect.View = Game1.Instance.Camera.View;
+                        effect.Projection = Game.Camera.Projection;
+                        effect.View = Game.Camera.View;
                     }
 
                     mesh.Draw();

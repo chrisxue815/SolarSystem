@@ -6,6 +6,8 @@ namespace SolarSystem
 {
     public class GameEntity
     {
+        public Game1 Game { get; set; }
+
         // logical
         public Vector3 Position { get; set; }
 
@@ -23,13 +25,14 @@ namespace SolarSystem
 
         public GameEntity()
         {
+            Game = Game1.Instance;
             Up = new Vector3(0, 1, 0);
             Basis = new Vector3(0, 0, -1);
         }
 
         public virtual void LoadContent()
         {
-            Model = Game1.Instance.Content.Load<Model>(ModelName);
+            Model = Game.Content.Load<Model>(ModelName);
         }
 
         public virtual void Update(GameTime gameTime)
@@ -47,8 +50,8 @@ namespace SolarSystem
                         effect.EnableDefaultLighting();
                         effect.DiffuseColor = DiffuseColor;
                         effect.World = LocalTransform * Matrix.CreateTranslation(Position);
-                        effect.Projection = Game1.Instance.Camera.Projection;
-                        effect.View = Game1.Instance.Camera.View;
+                        effect.Projection = Game.Camera.Projection;
+                        effect.View = Game.Camera.View;
                     }
 
                     mesh.Draw();

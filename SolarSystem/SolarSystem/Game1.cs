@@ -9,6 +9,9 @@ namespace SolarSystem
     {
         public List<GameEntity> Children { get; private set; }
         public Camera Camera { get; set; }
+        public Sun Sun { get; set; }
+        public Earth Earth { get; set; }
+        public Moon Moon { get; set; }
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
@@ -33,13 +36,13 @@ namespace SolarSystem
 
         protected override void Initialize()
         {
-            var sun = new Sun(0, 0, 0);
-            var earth = new Earth(sun);
-            var moon = new Moon(earth);
+            Sun = new Sun(0, 0, 0);
+            Earth = new Earth();
+            Moon = new Moon();
 
-            Children.Add(sun);
-            Children.Add(earth);
-            Children.Add(moon);
+            Children.Add(Sun);
+            Children.Add(Earth);
+            Children.Add(Moon);
 
             base.Initialize();
         }

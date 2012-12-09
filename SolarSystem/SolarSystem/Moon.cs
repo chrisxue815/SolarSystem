@@ -23,11 +23,11 @@ namespace SolarSystem
         public const float RotationPeriod = RevolutionPeriod;
         public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
 
-        private static readonly BasicEffect BasicEffect = new BasicEffect(Game1.Instance.GraphicsDevice);
+        private BasicEffect BasicEffect { get; set; }
 
-        public Moon(Earth earth)
+        public Moon()
         {
-            Earth = earth;
+            Earth = Game.Earth;
             Spin = 0;
 
             RelativePosition = new Vector3(0, 0, -RevolutionRadius);
@@ -38,6 +38,7 @@ namespace SolarSystem
 
             DiffuseColor = Color.Gray.ToVector3();
 
+            BasicEffect = new BasicEffect(Game1.Instance.GraphicsDevice);
             BasicEffect.VertexColorEnabled = true;
             BasicEffect.World = Matrix.Identity;
         }
@@ -66,13 +67,13 @@ namespace SolarSystem
 
         public override void Draw(GameTime gameTime)
         {
-            BasicEffect.View = Game1.Instance.Camera.View;
-            BasicEffect.Projection = Game1.Instance.Camera.Projection;
+            BasicEffect.View = Game.Camera.View;
+            BasicEffect.Projection = Game.Camera.Projection;
 
             foreach (var pass in BasicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                Game1.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
+                Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                                  pointList, 0, 1);
             }
 
