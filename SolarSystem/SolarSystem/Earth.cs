@@ -31,7 +31,7 @@ namespace SolarSystem
             Sun = sun;
             Spin = 0;
 
-            Position = new Vector3(Sun.Position.X, Sun.Position.Y, Sun.Position.Z - RevolutionRadius);
+            Position = new Vector3(Sun.Position.X, Sun.Position.Y, Sun.Position.Z + RevolutionRadius);
 
             Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
 

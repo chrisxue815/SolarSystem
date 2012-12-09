@@ -13,7 +13,11 @@ namespace SolarSystem
         private Vector3 RelativePosition
         {
             get { return relativePosition; }
-            set { relativePosition = value; Position = Earth.Position + relativePosition; }
+            set
+            {
+                relativePosition = value;
+                Position = Earth.Position + relativePosition;
+            }
         }
 
         VertexDeclaration vertexDeclaration;
@@ -36,7 +40,7 @@ namespace SolarSystem
             Earth = earth;
             Spin = 0;
 
-            RelativePosition = new Vector3(0, 0, -RevolutionRadius);
+            RelativePosition = new Vector3(0, 0, RevolutionRadius);
 
             Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
 
@@ -44,7 +48,6 @@ namespace SolarSystem
 
             DiffuseColor = Color.Gray.ToVector3();
 
-            InitializePointList();
             InitializeLineStrip();
 
             BasicEffect.VertexColorEnabled = true;
@@ -67,10 +70,12 @@ namespace SolarSystem
             pointList[0] = new VertexPositionColor(Position + rotationAxis, Color.Red);
             pointList[1] = new VertexPositionColor(Position - rotationAxis, Color.Red);
 
+            InitializePointList();
+
             Spin += RotationAngularSpeed * dt;
             if (Spin > MathHelper.TwoPi) Spin -= MathHelper.TwoPi;
             rotationAxis.Normalize();
-            LocalTransform = Scale*Matrix.CreateFromAxisAngle(rotationAxis, -Spin);
+            LocalTransform = Scale * Matrix.CreateFromAxisAngle(rotationAxis, -Spin);
         }
 
         public override void Draw(GameTime gameTime)
@@ -83,7 +88,7 @@ namespace SolarSystem
                 pass.Apply();
                 Game1.Instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                                  pointList, 0, 1);
-                //DrawRevolutionOrbit();
+                DrawRevolutionOrbit();
             }
 
             base.Draw(gameTime);
@@ -101,12 +106,12 @@ namespace SolarSystem
             {
                 float theta = ((float)MathHelper.TwoPi / points) * i;
 
-                float x = RevolutionRadius * (float)Math.Sin(theta);
-                float z = RevolutionRadius * (float)Math.Cos(theta);
+                float x = Earth.Position.X + RevolutionRadius * (float)Math.Sin(theta);
+                float z = Earth.Position.Z + RevolutionRadius * (float)Math.Cos(theta);
                 orbitPointList[i] = new VertexPositionColor(new Vector3(x, 0, z), Color.White);
             }
             // The last point is the same with the starting point
-            orbitPointList[points - 1] = new VertexPositionColor(new Vector3(0, 0, RevolutionRadius), Color.White);
+            orbitPointList[points - 1] = new VertexPositionColor(new Vector3(Earth.Position.X, 0, Earth.Position.Z + RevolutionRadius), Color.White);
 
             // Initialize the vertex buffer, allocating memory for each vertex.
             vertexBuffer = new VertexBuffer(Game1.Instance.GraphicsDevice, typeof(VertexPositionNormalTexture),
