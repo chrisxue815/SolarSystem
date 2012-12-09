@@ -35,11 +35,11 @@ namespace SolarSystem
             Model = Game.Content.Load<Model>(ModelName);
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(float dt)
         {
         }
 
-        public virtual void Draw(GameTime gameTime)
+        public virtual void Draw(float dt)
         {
             if (Model != null)
             {

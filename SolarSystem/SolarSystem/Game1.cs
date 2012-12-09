@@ -7,11 +7,12 @@ namespace SolarSystem
 {
     public class Game1 : Game
     {
-        public List<GameEntity> Children { get; private set; }
+        public Setting Setting { get; set; }
         public Camera Camera { get; set; }
         public Sun Sun { get; set; }
         public Earth Earth { get; set; }
         public Moon Moon { get; set; }
+        public List<GameEntity> Children { get; private set; }
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
@@ -30,8 +31,9 @@ namespace SolarSystem
             Content.RootDirectory = "Content";
             Instance = this;
 
-            Children = new List<GameEntity>();
+            Setting = new Setting();
             Camera = new Camera();
+            Children = new List<GameEntity>();
         }
 
         protected override void Initialize()
@@ -64,12 +66,16 @@ namespace SolarSystem
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Camera.Update(gameTime);
+            var dt = (float)gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
+
+            Setting.Update(dt);
 
             foreach (var child in Children)
             {
-                child.Update(gameTime);
+                child.Update(dt);
             }
+
+            Camera.Update(dt);
 
             base.Update(gameTime);
         }
@@ -83,9 +89,11 @@ namespace SolarSystem
             var state = new DepthStencilState {DepthBufferEnable = true};
             GraphicsDevice.DepthStencilState = state;
 
+            var dt = (float)gameTime.ElapsedGameTime.TotalDays * Setting.Speed;
+
             foreach (var child in Children)
             {
-                child.Draw(gameTime);
+                child.Draw(dt);
             }
 
             SpriteBatch.End();

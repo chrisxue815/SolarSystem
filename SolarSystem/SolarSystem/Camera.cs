@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace SolarSystem
@@ -8,12 +7,10 @@ namespace SolarSystem
     {
         public Matrix Projection { get; private set; }
         public Matrix View { get; private set; }
-        public bool ShowAxis { get; set; }
 
         private Vector3 Target { get; set; }
 
-        private Keys[] previousKeys;
-        private int perspective = 1;
+        private int previousPerspective = 1;
         private bool perspectiveChanged;
 
         public Camera()
@@ -25,32 +22,18 @@ namespace SolarSystem
             Calculate();
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(float dt)
         {
-            var keys = Keyboard.GetState().GetPressedKeys();
-            foreach (var key in keys)
+            var perspective = Game.Setting.Perspective;
+
+            if (perspective == 1 && previousPerspective != 1)
             {
-                var code = key.GetHashCode();
+                Position = new Vector3(0, 100, 200);
+                Target = new Vector3(0, 0, 20);
+                Up = new Vector3(0, 1, 0);
 
-                if (code == '1' && !previousKeys.Contains(key))
-                {
-                    perspective = 1;
-                    perspectiveChanged = true;
-                    Position = new Vector3(0, 100, 200);
-                    Target = new Vector3(0, 0, 20);
-                    Up = new Vector3(0, 1, 0);
-                }
-                else if (code == '2' && !previousKeys.Contains(key))
-                {
-                    perspective = 2;
-                }
-                else if (code == 'P' && !previousKeys.Contains(key))
-                {
-                    ShowAxis = !ShowAxis;
-                }
+                perspectiveChanged = true;
             }
-
-            previousKeys = keys;
 
             if (perspective == 2)
             {
@@ -66,15 +49,13 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
+            previousPerspective = perspective;
+
             if (perspectiveChanged)
             {
                 perspectiveChanged = false;
                 Calculate();
             }
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
         }
 
         private void Calculate()

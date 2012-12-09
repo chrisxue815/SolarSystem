@@ -19,7 +19,7 @@ namespace SolarSystem
             DiffuseColor = Color.Yellow.ToVector3();
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(float dt)
         {
             if (Model != null)
             {

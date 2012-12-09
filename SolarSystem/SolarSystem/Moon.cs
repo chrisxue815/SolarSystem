@@ -47,11 +47,8 @@ namespace SolarSystem
             BasicEffect.World = Matrix.Identity;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(float dt)
         {
-            // delta time
-            var dt = (float)gameTime.ElapsedGameTime.TotalDays;
-
             // Axial rotation
             var angle = RevolutionAngularSpeed * dt;
             RelativePosition = Vector3.Transform(RelativePosition, Matrix.CreateRotationY(angle));
@@ -64,14 +61,14 @@ namespace SolarSystem
             pointList[1] = new VertexPositionColor(Position - rotationAxis, Color.Red);
 
             Spin += RotationAngularSpeed * dt;
-            if (Spin > MathHelper.TwoPi) Spin -= MathHelper.TwoPi;
+            if (Spin > MathHelper.TwoPi) Spin %= MathHelper.TwoPi;
             rotationAxis.Normalize();
-            LocalTransform = Scale*Matrix.CreateFromAxisAngle(rotationAxis, -Spin);
+            LocalTransform = Scale*Matrix.CreateFromAxisAngle(rotationAxis, Spin);
         }
 
-        public override void Draw(GameTime gameTime)
+        public override void Draw(float dt)
         {
-            if (Game.Camera.ShowAxis)
+            if (Game.Setting.ShowAxis)
             {
                 BasicEffect.View = Game.Camera.View;
                 BasicEffect.Projection = Game.Camera.Projection;
@@ -84,7 +81,7 @@ namespace SolarSystem
                 }
             }
 
-            base.Draw(gameTime);
+            base.Draw(dt);
         }
     }
 }
