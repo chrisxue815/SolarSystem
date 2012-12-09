@@ -135,7 +135,7 @@ namespace SolarSystem
 
         public override void Draw(float dt)
         {
-            if (Game.Setting.ShowRevolutionAxis || Game.Setting.ShowRotationAxis)
+            if (Game.Setting.ShowEarthRevolutionAxis || Game.Setting.ShowEarthRotationAxis)
             {
                 BasicEffect.View = Game.Camera.View;
                 BasicEffect.Projection = Game.Camera.Projection;
@@ -145,12 +145,12 @@ namespace SolarSystem
                     pass.Apply();
                 }
 
-                if (Game.Setting.ShowRevolutionAxis)
+                if (Game.Setting.ShowEarthRevolutionAxis)
                 {
                     DrawRevolutionOrbit();
                 }
 
-                if (Game.Setting.ShowRotationAxis)
+                if (Game.Setting.ShowEarthRotationAxis)
                 {
                     Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                            RotationAxisPointList, 0, 1);

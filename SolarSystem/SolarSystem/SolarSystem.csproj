@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Monitor.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Earth.cs" />
     <Compile Include="GameEntity.cs" />

@@ -82,7 +82,7 @@ namespace SolarSystem
 
         public override void Draw(float dt)
         {
-            if (Game.Setting.ShowRevolutionAxis || Game.Setting.ShowRotationAxis)
+            if (Game.Setting.ShowMoonRevolutionAxis || Game.Setting.ShowMoonRotationAxis)
             {
                 BasicEffect.View = Game.Camera.View;
                 BasicEffect.Projection = Game.Camera.Projection;
@@ -92,12 +92,12 @@ namespace SolarSystem
                     pass.Apply();
                 }
 
-                if (Game.Setting.ShowRevolutionAxis)
+                if (Game.Setting.ShowMoonRevolutionAxis)
                 {
                     DrawRevolutionOrbit();
                 }
 
-                if (Game.Setting.ShowRotationAxis)
+                if (Game.Setting.ShowMoonRotationAxis)
                 {
                     Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                            pointList, 0, 1);

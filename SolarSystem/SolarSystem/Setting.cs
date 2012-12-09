@@ -1,25 +1,27 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 
 namespace SolarSystem
 {
     public class Setting : GameEntity
     {
         public int Perspective { get; set; }
-        public bool ShowRevolutionAxis { get; set; }
-        public bool ShowRotationAxis { get; set; }
         public int Speed { get; set; }
+        public bool ShowEarthRevolutionAxis { get; set; }
+        public bool ShowEarthRotationAxis { get; set; }
+        public bool ShowMoonRevolutionAxis { get; set; }
+        public bool ShowMoonRotationAxis { get; set; }
+        public bool ShowHelp { get; set; }
+        public bool ShowParameter { get; set; }
 
         private readonly int[] PossibleSpeeds = { 1, 1000, 10000, 100000, 1000000, 5000000, 10000000 };
         private int speedIndex;
-
 
         private Keys[] PreviousKeys { get; set; }
 
         public Setting()
         {
             Perspective = 1;
-            ShowRevolutionAxis = false;
+            ShowEarthRevolutionAxis = false;
             Speed = PossibleSpeeds[0];
         }
 
@@ -39,13 +41,21 @@ namespace SolarSystem
                 {
                     Perspective = 2;
                 }
-                else if (key == Keys.P)
-                {
-                    ShowRevolutionAxis = !ShowRevolutionAxis;
-                }
                 else if (key == Keys.O)
                 {
-                    ShowRotationAxis = !ShowRotationAxis;
+                    ShowEarthRotationAxis = !ShowEarthRotationAxis;
+                }
+                else if (key == Keys.P)
+                {
+                    ShowEarthRevolutionAxis = !ShowEarthRevolutionAxis;
+                }
+                else if (key == Keys.K)
+                {
+                    ShowMoonRotationAxis = !ShowMoonRotationAxis;
+                }
+                else if (key == Keys.L)
+                {
+                    ShowMoonRevolutionAxis = !ShowMoonRevolutionAxis;
                 }
                 else if (key == Keys.Up)
                 {
