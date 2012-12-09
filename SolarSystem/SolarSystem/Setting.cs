@@ -13,7 +13,7 @@ namespace SolarSystem
         public bool ShowHelp { get; set; }
         public bool ShowParameter { get; set; }
 
-        private readonly int[] PossibleSpeeds = { 1, 1000, 10000, 100000, 1000000, 5000000, 10000000 };
+        private readonly int[] PossibleSpeeds = { 1, 1000, 10000, 100000, 500000, 1000000, 5000000, 10000000 };
         private int speedIndex;
 
         private Keys[] PreviousKeys { get; set; }

@@ -16,7 +16,7 @@ namespace SolarSystem
 
             ModelName = "sphere";
 
-            DiffuseColor = Color.Yellow.ToVector3();
+            DiffuseColor = Color.OrangeRed.ToVector3();
         }
 
         public override void Draw(float dt)
