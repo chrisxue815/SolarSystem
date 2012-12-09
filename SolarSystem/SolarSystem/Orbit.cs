@@ -3,23 +3,24 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SolarSystem
 {
-    public class Sun : GameEntity
+    public class Orbit : GameEntity
     {
-        public const float Radius = 15f;
+        public float Radius = 15f;
 
-        public Sun(float x, float y, float z)
+        public Orbit(Vector3 pos, float radius)
         {
-            Position = new Vector3(x, y, z);
+            Position = pos;
+            Radius = radius;
 
             Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
             LocalTransform = Scale;
 
-            ModelName = "sphere";
+            ModelName = "circle";
 
             DiffuseColor = Color.Yellow.ToVector3();
         }
 
-        public override void Draw(float dt)
+        public override void Draw(GameTime gameTime)
         {
             if (Model != null)
             {
@@ -30,8 +31,8 @@ namespace SolarSystem
                         effect.EnableDefaultLighting();
                         effect.DiffuseColor = DiffuseColor;
                         effect.World = LocalTransform * Matrix.CreateTranslation(Position);
-                        effect.Projection = Game.Camera.Projection;
-                        effect.View = Game.Camera.View;
+                        effect.Projection = Game1.Instance.Camera.Projection;
+                        effect.View = Game1.Instance.Camera.View;
                     }
 
                     mesh.Draw();
