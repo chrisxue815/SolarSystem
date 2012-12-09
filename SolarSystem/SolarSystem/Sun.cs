@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace SolarSystem
 {
@@ -16,6 +17,26 @@ namespace SolarSystem
             ModelName = "sphere";
 
             DiffuseColor = Color.Yellow.ToVector3();
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            if (Model != null)
+            {
+                foreach (var mesh in Model.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.EnableDefaultLighting();
+                        effect.DiffuseColor = DiffuseColor;
+                        effect.World = LocalTransform * Matrix.CreateTranslation(Position);
+                        effect.Projection = Game1.Instance.Camera.Projection;
+                        effect.View = Game1.Instance.Camera.View;
+                    }
+
+                    mesh.Draw();
+                }
+            }
         }
     }
 }

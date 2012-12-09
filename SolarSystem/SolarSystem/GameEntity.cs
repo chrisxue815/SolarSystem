@@ -45,7 +45,6 @@ namespace SolarSystem
                     foreach (BasicEffect effect in mesh.Effects)
                     {
                         effect.EnableDefaultLighting();
-                        effect.PreferPerPixelLighting = true;
                         effect.DiffuseColor = DiffuseColor;
                         effect.World = LocalTransform * Matrix.CreateTranslation(Position);
                         effect.Projection = Game1.Instance.Camera.Projection;
