@@ -39,17 +39,20 @@ namespace SolarSystem
         private float shininess = 20.0f;
         private float cloudStrength = 1.15f;
         private BoundingSphere bounds;
+        private BasicEffect BasicEffect { get; set; }
 
-        // constants
+        // attributes
         public const float Radius = 2f;
-        public const float RevolutionRadius = 100f;
-        public const float RevolutionPeriod = 10f;
-        public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
-        public const float RotationPeriod = RevolutionPeriod / 365 * 100;
-        public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
         public const float EclipticObliquity = -0.409f;
 
-        private BasicEffect BasicEffect { get; set; }
+        // revolution
+        public const float RevolutionRadius = 100f;
+        public const float RevolutionPeriod = 365.2564f;
+        public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
+
+        // rotation
+        public const float RotationPeriod = 1f;
+        public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
 
         public Earth()
         {
@@ -96,7 +99,7 @@ namespace SolarSystem
         public override void Update(GameTime gameTime)
         {
             // delta time
-            var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var dt = (float)gameTime.ElapsedGameTime.TotalDays;
 
             // revolution
             var angle = RevolutionAngularSpeed * dt;
@@ -120,15 +123,18 @@ namespace SolarSystem
 
         public override void Draw(GameTime gameTime)
         {
-            // draw rotation axis
-            BasicEffect.View = Game.Camera.View;
-            BasicEffect.Projection = Game.Camera.Projection;
-
-            foreach (var pass in BasicEffect.CurrentTechnique.Passes)
+            if (Game.Camera.ShowAxis)
             {
-                pass.Apply();
-                Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
-                                                                 RotationAxisPointList, 0, 1);
+                // draw rotation axis
+                BasicEffect.View = Game.Camera.View;
+                BasicEffect.Projection = Game.Camera.Projection;
+
+                foreach (var pass in BasicEffect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
+                                                           RotationAxisPointList, 0, 1);
+                }
             }
 
             // draw model

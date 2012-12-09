@@ -17,9 +17,13 @@ namespace SolarSystem
         }
 
         public const float Radius = 3f;
+
+        // revolution
         public const float RevolutionRadius = 20f;
-        public const float RevolutionPeriod = 0.75f;
+        public const float RevolutionPeriod = 29.53f;
         public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
+
+        // rotation
         public const float RotationPeriod = RevolutionPeriod;
         public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
 
@@ -46,7 +50,7 @@ namespace SolarSystem
         public override void Update(GameTime gameTime)
         {
             // delta time
-            var dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var dt = (float)gameTime.ElapsedGameTime.TotalDays;
 
             // Axial rotation
             var angle = RevolutionAngularSpeed * dt;
@@ -67,14 +71,17 @@ namespace SolarSystem
 
         public override void Draw(GameTime gameTime)
         {
-            BasicEffect.View = Game.Camera.View;
-            BasicEffect.Projection = Game.Camera.Projection;
-
-            foreach (var pass in BasicEffect.CurrentTechnique.Passes)
+            if (Game.Camera.ShowAxis)
             {
-                pass.Apply();
-                Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
-                                                                 pointList, 0, 1);
+                BasicEffect.View = Game.Camera.View;
+                BasicEffect.Projection = Game.Camera.Projection;
+
+                foreach (var pass in BasicEffect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
+                                                           pointList, 0, 1);
+                }
             }
 
             base.Draw(gameTime);

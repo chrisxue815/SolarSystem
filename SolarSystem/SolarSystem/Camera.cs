@@ -8,11 +8,13 @@ namespace SolarSystem
     {
         public Matrix Projection { get; private set; }
         public Matrix View { get; private set; }
+        public bool ShowAxis { get; set; }
 
         private Vector3 Target { get; set; }
 
+        private Keys[] previousKeys;
         private int perspective = 1;
-        private bool perspectiveChanged = false;
+        private bool perspectiveChanged;
 
         public Camera()
         {
@@ -25,11 +27,12 @@ namespace SolarSystem
 
         public override void Update(GameTime gameTime)
         {
-            foreach (var key in Keyboard.GetState().GetPressedKeys())
+            var keys = Keyboard.GetState().GetPressedKeys();
+            foreach (var key in keys)
             {
-                var code = key.GetHashCode() - 48;
+                var code = key.GetHashCode();
 
-                if (code == 1)
+                if (code == '1' && !previousKeys.Contains(key))
                 {
                     perspective = 1;
                     perspectiveChanged = true;
@@ -37,11 +40,17 @@ namespace SolarSystem
                     Target = new Vector3(0, 0, 20);
                     Up = new Vector3(0, 1, 0);
                 }
-                else if (code == 2)
+                else if (code == '2' && !previousKeys.Contains(key))
                 {
                     perspective = 2;
                 }
+                else if (code == 'P' && !previousKeys.Contains(key))
+                {
+                    ShowAxis = !ShowAxis;
+                }
             }
+
+            previousKeys = keys;
 
             if (perspective == 2)
             {
