@@ -1,18 +1,21 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 
 namespace SolarSystem
 {
     public class Earth : GameEntity
     {
-        private Sun Sun { get; set; }
-        private float Spin { get; set; }
-        private Vector3 RotationAxisHalf { get; set; }
+        // revolution
+        public const float RevolutionRadius = 100f;
+        public const float RevolutionPeriod = 365.2564f;
+        public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
+        
+        public float Revolution { get; set; }
+        private Vector3 RevolutionBasis { get; set; }
 
         private Vector3 relativePosition;
-        private Vector3 RelativePosition
+        public Vector3 RelativePosition
         {
             get { return relativePosition; }
             set
@@ -21,6 +24,15 @@ namespace SolarSystem
                 Position = Sun.Position + relativePosition;
             }
         }
+
+        // rotation
+        public const float RotationPeriod = 1f;
+        public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
+
+        public float Rotation { get; set; }
+        private Vector3 RotationAxis { get; set; }
+
+        private Sun Sun { get; set; }
 
         private VertexPositionColor[] RotationAxisPointList { get; set; }
 
@@ -54,22 +66,14 @@ namespace SolarSystem
         short[] lineStripIndices;
         private const int points = 500;
 
-        // revolution
-        public const float RevolutionRadius = 100f;
-        public const float RevolutionPeriod = 365.2564f;
-        public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
-
-        // rotation
-        public const float RotationPeriod = 1f;
-        public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
-
         public Earth()
         {
             Sun = Game.Sun;
-            Spin = 0;
+            Rotation = 0;
             RotationAxisPointList = new VertexPositionColor[2];
 
-            RelativePosition = new Vector3(0, 0, -RevolutionRadius);
+            // vernal equinox
+            RevolutionBasis = new Vector3(0, 0, -RevolutionRadius);
 
             Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
 
@@ -86,7 +90,7 @@ namespace SolarSystem
             Up.Normalize();
 
             // rotation axis
-            RotationAxisHalf = Up * Radius * 7f;
+            RotationAxis = Up * Radius * 7f;
         }
 
         public override void LoadContent()
@@ -113,19 +117,21 @@ namespace SolarSystem
         {
             // revolution
             var revolutionAngle = RevolutionAngularSpeed * dt;
-            RelativePosition = Vector3.Transform(RelativePosition, Matrix.CreateRotationY(revolutionAngle));
+            Revolution += revolutionAngle;
+            if (Revolution > MathHelper.TwoPi) Revolution %= MathHelper.TwoPi;
+            RelativePosition = Vector3.Transform(RevolutionBasis, Matrix.CreateRotationY(Revolution));
 
             // rotation axis
-            RotationAxisPointList[0] = new VertexPositionColor(Position + RotationAxisHalf, Color.Red);
-            RotationAxisPointList[1] = new VertexPositionColor(Position - RotationAxisHalf, Color.Red);
+            RotationAxisPointList[0] = new VertexPositionColor(Position + RotationAxis, Color.Red);
+            RotationAxisPointList[1] = new VertexPositionColor(Position - RotationAxis, Color.Red);
 
             // rotation
             var rotationAngle = RotationAngularSpeed * dt;
             if (rotationAngle > MathHelper.Pi) rotationAngle = 1f;
-            Spin += rotationAngle;
-            if (Spin > MathHelper.TwoPi) Spin %= MathHelper.TwoPi;
+            Rotation += rotationAngle;
+            if (Rotation > MathHelper.TwoPi) Rotation %= MathHelper.TwoPi;
             LocalTransform = Scale * Matrix.CreateRotationZ(EclipticObliquity) *
-                             Matrix.CreateFromAxisAngle(Up, Spin);
+                             Matrix.CreateFromAxisAngle(Up, Rotation);
 
             // sunlight direction
             var fromSun = Position - Sun.Position;

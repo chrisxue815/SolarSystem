@@ -32,7 +32,8 @@ namespace SolarSystem
 
         public virtual void LoadContent()
         {
-            Model = Game.Content.Load<Model>(ModelName);
+            if (ModelName != null)
+                Model = Game.Content.Load<Model>(ModelName);
         }
 
         public virtual void Update(float dt)

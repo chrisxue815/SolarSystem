@@ -45,6 +45,7 @@ namespace SolarSystem
             Children.Add(Sun);
             Children.Add(Earth);
             Children.Add(Moon);
+            Children.Add(new Monitor());
 
             base.Initialize();
         }
