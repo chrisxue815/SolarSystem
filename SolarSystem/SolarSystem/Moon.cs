@@ -20,11 +20,17 @@ namespace SolarSystem
             }
         }
 
+        // drawing revolution orbit
+        short[] lineStripIndices;
+        private const int points = 500;
         VertexDeclaration vertexDeclaration;
         VertexBuffer vertexBuffer;
         private VertexPositionColor[] revOrbitPointList;
-        short[] lineStripIndices;
-        private const int points = 500;
+
+        // drawing rotation orbit
+        VertexDeclaration vertexDeclaration2;
+        VertexBuffer vertexBuffer2;
+        private VertexPositionColor[] rotOrbitPointList;
 
         public const float Radius = 3f;
 
@@ -73,6 +79,7 @@ namespace SolarSystem
             pointList[1] = new VertexPositionColor(Position - rotationAxis, Color.Red);
 
             InitRevPointList();
+            InitRotPointList();
 
             Spin += RotationAngularSpeed * dt;
             if (Spin > MathHelper.TwoPi) Spin %= MathHelper.TwoPi;
@@ -102,6 +109,9 @@ namespace SolarSystem
                     Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                            pointList, 0, 1);
                 }
+
+                // Draw the Moon's rotation orbit
+                DrawRotationOrbit();
             }
 
             base.Draw(dt);
@@ -146,6 +156,36 @@ namespace SolarSystem
             vertexBuffer.SetData<VertexPositionColor>(revOrbitPointList);
         }
 
+        /* Initialize point list on the rotation orbit to be drawn */
+        private void InitRotPointList()
+        {
+            vertexDeclaration2 = new VertexDeclaration(VertexPositionTexture.VertexDeclaration.GetVertexElements());
+
+            rotOrbitPointList = new VertexPositionColor[points];
+
+            // Add points to the orbit point list
+            for (int i = 0; i < points - 1; i++)
+            {
+                float theta = ((float)MathHelper.TwoPi / points) * i;
+
+                // Translate position relative to the Earth's position
+                float x = Position.X + (Radius + 2) * (float)Math.Sin(theta);
+                float z = Position.Z + (Radius + 2) * (float)Math.Cos(theta);
+                var orbitPos = new Vector3(x, Position.Y, z);
+
+                rotOrbitPointList[i] = new VertexPositionColor(orbitPos, Color.White);
+            }
+            // The last point is the same with the starting point
+            rotOrbitPointList[points - 1] = rotOrbitPointList[0];
+
+            // Initialize the vertex buffer, allocating memory for each vertex.
+            vertexBuffer2 = new VertexBuffer(Game1.Instance.GraphicsDevice, typeof(VertexPositionNormalTexture),
+                                    250, BufferUsage.WriteOnly | BufferUsage.None);
+
+            // Set the vertex buffer data to the array of vertices.
+            vertexBuffer2.SetData<VertexPositionColor>(rotOrbitPointList);
+        }
+
         /* Draw lines to connect two points continuously for revolution orbit */
         private void DrawRevolutionOrbit()
         {
@@ -164,6 +204,26 @@ namespace SolarSystem
 
             for (int i = 0; i < revOrbitPointList.Length; i++)
                 revOrbitPointList[i].Color = Color.White;
+        }
+
+        /* Draw lines to connect two points continuously for rotation orbit */
+        private void DrawRotationOrbit()
+        {
+            for (int i = 0; i < rotOrbitPointList.Length; i++)
+                rotOrbitPointList[i].Color = Color.Red;
+
+            Game.GraphicsDevice.DrawUserIndexedPrimitives(
+                PrimitiveType.LineStrip,
+                rotOrbitPointList,
+                0,                  // vertex buffer offset to add to each element of the index buffer
+                points,             // number of vertices to draw
+                lineStripIndices,
+                0,                  // first index element to read
+                points - 1          // number of primitives to draw
+            );
+
+            for (int i = 0; i < rotOrbitPointList.Length; i++)
+                rotOrbitPointList[i].Color = Color.White;
         }
     }
 }

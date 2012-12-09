@@ -162,6 +162,7 @@ namespace SolarSystem
                                                            RotationAxisPointList, 0, 1);
                 }
 
+                // Draw the Earth's rotation orbit
                 DrawRotationOrbit();
             }
 
