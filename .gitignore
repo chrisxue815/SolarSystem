@@ -5,3 +5,4 @@ _ReSharper.SolarSystem
 *.suo
 *.csproj.user
 *.csproj.Debug.cachefile
+*.contentproj.user
