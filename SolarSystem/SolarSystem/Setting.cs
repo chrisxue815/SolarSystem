@@ -6,7 +6,8 @@ namespace SolarSystem
     public class Setting : GameEntity
     {
         public int Perspective { get; set; }
-        public bool ShowAxis { get; set; }
+        public bool ShowRevolutionAxis { get; set; }
+        public bool ShowRotationAxis { get; set; }
         public int Speed { get; set; }
 
         private readonly int[] PossibleSpeeds = { 1, 1000, 10000, 100000, 1000000, 5000000, 10000000 };
@@ -18,7 +19,7 @@ namespace SolarSystem
         public Setting()
         {
             Perspective = 1;
-            ShowAxis = false;
+            ShowRevolutionAxis = false;
             Speed = PossibleSpeeds[0];
         }
 
@@ -40,7 +41,11 @@ namespace SolarSystem
                 }
                 else if (key == Keys.P)
                 {
-                    ShowAxis = !ShowAxis;
+                    ShowRevolutionAxis = !ShowRevolutionAxis;
+                }
+                else if (key == Keys.O)
+                {
+                    ShowRotationAxis = !ShowRotationAxis;
                 }
                 else if (key == Keys.Up)
                 {

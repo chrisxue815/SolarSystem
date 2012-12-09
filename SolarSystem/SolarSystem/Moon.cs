@@ -82,7 +82,7 @@ namespace SolarSystem
 
         public override void Draw(float dt)
         {
-            if (Game.Setting.ShowAxis)
+            if (Game.Setting.ShowRevolutionAxis || Game.Setting.ShowRotationAxis)
             {
                 BasicEffect.View = Game.Camera.View;
                 BasicEffect.Projection = Game.Camera.Projection;
@@ -90,11 +90,18 @@ namespace SolarSystem
                 foreach (var pass in BasicEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
+                }
+
+                if (Game.Setting.ShowRevolutionAxis)
+                {
+                    DrawRevolutionOrbit();
+                }
+
+                if (Game.Setting.ShowRotationAxis)
+                {
                     Game.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
                                                            pointList, 0, 1);
                 }
-                
-                DrawRevolutionOrbit();
             }
 
             base.Draw(dt);
@@ -145,7 +152,7 @@ namespace SolarSystem
             for (int i = 0; i < orbitPointList.Length; i++)
                 orbitPointList[i].Color = Color.Red;
 
-            Game1.Instance.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionColor>(
+            Game.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionColor>(
                 PrimitiveType.LineStrip,
                 orbitPointList,
                 0,                  // vertex buffer offset to add to each element of the index buffer
