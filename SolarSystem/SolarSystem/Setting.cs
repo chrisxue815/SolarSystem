@@ -41,6 +41,10 @@ namespace SolarSystem
                 {
                     Perspective = 2;
                 }
+                else if (key == Keys.D3)
+                {
+                    Perspective = 3;
+                }
                 else if (key == Keys.O)
                 {
                     ShowEarthRotationAxis = !ShowEarthRotationAxis;

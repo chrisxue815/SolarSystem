@@ -49,6 +49,20 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
+            if (perspective == 3)
+            {
+                Target = Game.Earth.Position;
+                Up = Game.Earth.Up;
+
+                var toSun = Game.Sun.Position - Game.Earth.Position;
+                var earthRight = Vector3.Cross(Game.Earth.Up, toSun);
+                earthRight.Normalize();
+
+                Position = Game.Earth.Position + earthRight * 50;
+
+                perspectiveChanged = true;
+            }
+
             previousPerspective = perspective;
 
             if (perspectiveChanged)
