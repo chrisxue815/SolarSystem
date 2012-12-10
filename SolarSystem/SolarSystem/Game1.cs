@@ -16,7 +16,9 @@ namespace SolarSystem
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
-        //public Texture2D Background { get; private set; }
+
+        public Model model;
+        public Texture2D texture;
 
         public static Game1 Instance { get; private set; }
 
@@ -56,7 +58,8 @@ namespace SolarSystem
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //Background = Content.Load<Texture2D>("space");
+            model = Content.Load<Model>("Skybox");
+            texture = Content.Load<Texture2D>("space");
 
             foreach (var child in Children)
             {
@@ -90,8 +93,29 @@ namespace SolarSystem
 
             SpriteBatch.Begin();
 
-            //SpriteBatch.Draw(Background, new Vector2(0, 0), Color.White);
-            //SpriteBatch.Draw(Background, new Rectangle(100, 100, 50, 80), Color.White);
+            //=================== Using Skybox =====================//
+            GraphicsDevice.DepthStencilState = DepthStencilState.None;
+
+            Matrix[] skytransforms = new Matrix[model.Bones.Count];
+            model.CopyAbsoluteBoneTransformsTo(skytransforms);
+
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                // Set mesh orientation, and camera projection
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.TextureEnabled = true;
+                    effect.Texture = texture;
+                    effect.AmbientLightColor = new Vector3(1, 1, 1);
+                    effect.World = skytransforms[mesh.ParentBone.Index] * Matrix.CreateScale(2000.0f) * Matrix.CreateTranslation(Camera.Position);
+                    //effect.World = skytransforms[mesh.ParentBone.Index] * Matrix.CreateScale(2000.0f) * RotationMatrix * Matrix.CreateTranslation(Camera.Position);
+                    effect.View = Camera.View;
+                    effect.Projection = Camera.Projection;
+                }
+                
+                mesh.Draw();
+            }
+            //===================== End of Using Skybox ==============//
 
             var state = new DepthStencilState {DepthBufferEnable = true};
             GraphicsDevice.DepthStencilState = state;
