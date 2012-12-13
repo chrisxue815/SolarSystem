@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -32,6 +33,7 @@ namespace SolarSystem
             Help.Add("1: Overlook");
             Help.Add("2: Sunrise");
             Help.Add("3: Sunset");
+            Help.Add("4: Sunrise on Earth");
             Help.Add("Alt-Enter: Full screen");
             Help.Add("");
             Help.Add("P: Show Earth's revolution orbit");
@@ -94,17 +96,17 @@ namespace SolarSystem
 
             string relativeSpeed;
             var speed = Game.Setting.Speed;
-            if ((speed / 86400) > 0)
+            if ((Math.Abs(speed) / 86400) > 0)
             {
                 speed /= (3600 * 24);
                 relativeSpeed = string.Format("{0:N0} day/s", speed);
             }
-            else if ((speed/3600) > 0)
+            else if ((Math.Abs(speed) / 3600) > 0)
             {
                 speed /= 3600;
                 relativeSpeed = string.Format("{0:N0} hour/s", speed);
             }
-            else if((speed/60) > 0)
+            else if ((Math.Abs(speed) / 60) > 0)
             {
                 speed /= 60;
                 relativeSpeed = string.Format("{0:N0} min/s", speed);
