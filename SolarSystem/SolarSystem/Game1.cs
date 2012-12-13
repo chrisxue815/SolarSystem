@@ -15,8 +15,6 @@ namespace SolarSystem
         public Moon Moon { get; set; }
         public List<GameEntity> Children { get; private set; }
 
-        public int WindowWidth { get; set; }
-        public int WindowHeight { get; set; }
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
 
@@ -30,24 +28,20 @@ namespace SolarSystem
 
         public Game1()
         {
-            WindowWidth = 800;
-            WindowHeight = 600;
+            Content.RootDirectory = "Content";
+            Instance = this;
 
             Graphics = new GraphicsDeviceManager(this);
-            Graphics.PreferredBackBufferWidth = WindowWidth;
-            Graphics.PreferredBackBufferHeight = WindowHeight;
+            Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             Graphics.PreferMultiSampling = true;
             Graphics.SynchronizeWithVerticalRetrace = true;
             Graphics.ApplyChanges();
-
-            Content.RootDirectory = "Content";
-            Instance = this;
 
             Setting = new Setting();
             Camera = new Camera();
             Children = new List<GameEntity>();
         }
-
         protected override void Initialize()
         {
             Sun = new Sun(0, 0, 0);
@@ -97,9 +91,20 @@ namespace SolarSystem
                 child.Update(dt);
             }
 
+            ToggleFullScreen();
+
             Camera.Update(dt);
 
             base.Update(gameTime);
+        }
+
+        private void ToggleFullScreen()
+        {
+            if (Graphics.IsFullScreen != Setting.FullScreen)
+            {
+                Graphics.IsFullScreen = Setting.FullScreen;
+                Graphics.ApplyChanges();
+            }
         }
 
         protected override void Draw(GameTime gameTime)
