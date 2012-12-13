@@ -13,12 +13,12 @@ namespace SolarSystem
         public Sun Sun { get; set; }
         public Earth Earth { get; set; }
         public Moon Moon { get; set; }
+        public Text3D Vernal { get; set; }
         public List<GameEntity> Children { get; private set; }
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
 
-        public Model vernalModel;
         public Model model;
         public Texture2D texture;
 
@@ -50,10 +50,13 @@ namespace SolarSystem
             Sun = new Sun(0, 0, 0);
             Earth = new Earth();
             Moon = new Moon();
+            Vernal = new Text3D();
+            Vernal.ModelName = @"Models\vernal";
 
             Children.Add(Sun);
             Children.Add(Earth);
             Children.Add(Moon);
+            Children.Add(Vernal);
             Children.Add(new Monitor());
 
             base.Initialize();
@@ -64,7 +67,6 @@ namespace SolarSystem
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            vernalModel = Content.Load<Model>(@"Models\vernal");
             model = Content.Load<Model>(@"Models\Skybox");
             texture = Content.Load<Texture2D>(@"Textures\space");
 
@@ -141,22 +143,6 @@ namespace SolarSystem
                 mesh.Draw();
             }
             //===================== End of Using Skybox ==============//
-
-            var state = new DepthStencilState {DepthBufferEnable = true};
-            GraphicsDevice.DepthStencilState = state;
-
-            foreach (var mesh in vernalModel.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    //effect.EnableDefaultLighting();
-                    effect.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f);
-                    effect.World = Matrix.CreateScale(0.1f) * Matrix.CreateTranslation(new Vector3(0, 20, -30));
-                    effect.Projection = Camera.Projection;
-                    effect.View = Camera.View;
-                }
-                mesh.Draw();
-            }
 
             var dt = (float) gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
 
