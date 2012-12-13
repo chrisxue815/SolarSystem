@@ -190,7 +190,7 @@ namespace SolarSystem
             {
                 foreach (var mesh in Model.Meshes)
                 {
-                    foreach (Effect e in mesh.Effects)
+                    foreach (var e in mesh.Effects)
                     {
                         e.CurrentTechnique = e.Techniques["EarthWithClouds"];
                         e.Parameters["cloudStrength"].SetValue(cloudStrength);
