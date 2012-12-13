@@ -54,7 +54,7 @@ namespace SolarSystem
 
             Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
 
-            ModelName = "sphere";
+            ModelName = @"Models\moon";
 
             DiffuseColor = Color.Gray.ToVector3();
 

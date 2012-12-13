@@ -57,6 +57,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\earth.fbx">
+      <Name>earth</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+      <ProcessorParameters_GenerateTangentFrames>True</ProcessorParameters_GenerateTangentFrames>
+    </Compile>
+    <Compile Include="Models\moon.fbx">
+      <Name>moon</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\sun.fbx">
+      <Name>sun</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
     <Compile Include="sphere.fbx">
       <Name>sphere</Name>
       <Importer>FbxImporter</Importer>
@@ -80,16 +96,6 @@
       <Name>starfield</Name>
       <Importer>EffectImporter</Importer>
       <Processor>EffectProcessor</Processor>
-    </Compile>
-    <Compile Include="Models\earth.fbx">
-      <Name>earth</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_GenerateTangentFrames>True</ProcessorParameters_GenerateTangentFrames>
-      <ProcessorParameters_ColorKeyEnabled>False</ProcessorParameters_ColorKeyEnabled>
-      <ProcessorParameters_TextureFormat>NoChange</ProcessorParameters_TextureFormat>
-      <ProcessorParameters_PremultiplyTextureAlpha>False</ProcessorParameters_PremultiplyTextureAlpha>
-      <ProcessorParameters_PremultiplyVertexColors>False</ProcessorParameters_PremultiplyVertexColors>
     </Compile>
     <Compile Include="Textures\earth_clouds_alpha.dds">
       <Name>earth_clouds_alpha</Name>

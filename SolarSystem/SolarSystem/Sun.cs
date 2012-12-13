@@ -5,18 +5,18 @@ namespace SolarSystem
 {
     public class Sun : GameEntity
     {
-        public const float Radius = 15f;
+        public const float Radius = 0.2f;
 
         public Sun(float x, float y, float z)
         {
             Position = new Vector3(x, y, z);
 
             Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
-            LocalTransform = Scale;
+            LocalTransform = Scale * Matrix.CreateRotationZ(MathHelper.PiOver4) * Matrix.CreateRotationX(MathHelper.PiOver4);
 
-            ModelName = "sphere";
+            ModelName = @"Models\sun";
 
-            DiffuseColor = Color.OrangeRed.ToVector3();
+            DiffuseColor = Color.White.ToVector3();
         }
 
         public override void Draw(float dt)
@@ -27,7 +27,7 @@ namespace SolarSystem
                 {
                     foreach (BasicEffect effect in mesh.Effects)
                     {
-                        effect.EnableDefaultLighting();
+                        //effect.EnableDefaultLighting();
                         effect.DiffuseColor = DiffuseColor;
                         effect.World = LocalTransform * Matrix.CreateTranslation(Position);
                         effect.Projection = Game.Camera.Projection;
