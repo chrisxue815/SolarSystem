@@ -15,8 +15,6 @@ namespace SolarSystem
         public Moon Moon { get; set; }
         public List<GameEntity> Children { get; private set; }
 
-        public int WindowWidth { get; set; }
-        public int WindowHeight { get; set; }
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
 
@@ -30,26 +28,22 @@ namespace SolarSystem
 
         public Game1()
         {
-            WindowWidth = 800;
-            WindowHeight = 600;
+            Content.RootDirectory = "Content";
+            Instance = this;
 
             Graphics = new GraphicsDeviceManager(this)
                            {
-                               PreferredBackBufferWidth = WindowWidth,
-                               PreferredBackBufferHeight = WindowHeight,
+                               PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width,
+                               PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height,
                                PreferMultiSampling = true,
                                SynchronizeWithVerticalRetrace = true
                            };
             Graphics.ApplyChanges();
 
-            Content.RootDirectory = "Content";
-            Instance = this;
-
             Setting = new Setting();
             Camera = new Camera();
             Children = new List<GameEntity>();
         }
-
         protected override void Initialize()
         {
             Sun = new Sun(0, 0, 0);
@@ -99,9 +93,20 @@ namespace SolarSystem
                 child.Update(dt);
             }
 
+            ToggleFullScreen();
+
             Camera.Update(dt);
 
             base.Update(gameTime);
+        }
+
+        private void ToggleFullScreen()
+        {
+            if (Graphics.IsFullScreen != Setting.FullScreen)
+            {
+                Graphics.IsFullScreen = Setting.FullScreen;
+                Graphics.ApplyChanges();
+            }
         }
 
         protected override void Draw(GameTime gameTime)
