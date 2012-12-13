@@ -36,10 +36,10 @@ namespace SolarSystem
             Help.Add("4: Look up to the sky");
             Help.Add("Alt-Enter: Full screen");
             Help.Add("");
-            Help.Add("P: Show Earth's revolution orbit");
-            Help.Add("O: Show Earth's rotation   orbit");
-            Help.Add("L: Show Moon's revolution  orbit");
-            Help.Add("K: Show Moon's rotation    orbit");
+            Help.Add("P: Earth revolution orbit");
+            Help.Add("O: Earth rotation   orbit");
+            Help.Add("L: Moon  revolution orbit");
+            Help.Add("K: Moon  rotation   orbit");
         }
 
         public override void LoadContent()
@@ -119,7 +119,7 @@ namespace SolarSystem
             var runningSpeed = string.Format("Speed: x{0:N0} ({1})", Game.Setting.Speed, relativeSpeed);
             Game.SpriteBatch.DrawString(Font, runningSpeed, new Vector2(630, 10), Color.White);
 
-            pos = new Vector2(1125, 10);
+            pos = new Vector2(1120, 10);
             Game.SpriteBatch.DrawString(Font, "H: Help", pos, Color.White);
             if (Game.Setting.ShowHelp)
             {
