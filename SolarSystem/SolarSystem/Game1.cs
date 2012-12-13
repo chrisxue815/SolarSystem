@@ -63,10 +63,10 @@ namespace SolarSystem
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            model = Content.Load<Model>("Skybox");
-            texture = Content.Load<Texture2D>("space");
+            model = Content.Load<Model>(@"Models\Skybox");
+            texture = Content.Load<Texture2D>(@"Textures\space");
 
-            soundEffect = Content.Load<SoundEffect>("sound");
+            soundEffect = Content.Load<SoundEffect>(@"Sound\sound");
             soundEffectIns = soundEffect.CreateInstance();
             soundEffectIns.Volume = 1.0f;
             soundEffectIns.IsLooped = true;
