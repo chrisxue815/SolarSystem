@@ -87,12 +87,15 @@ namespace SolarSystem
 
             Setting.Update(dt);
 
-            foreach (var child in Children)
+            if (!Setting.Pause)
             {
-                child.Update(dt);
-            }
+                foreach (var child in Children)
+                {
+                    child.Update(dt);
+                }
 
-            Camera.Update(dt);
+                Camera.Update(dt);
+            }
 
             base.Update(gameTime);
         }
@@ -106,10 +109,10 @@ namespace SolarSystem
             //================ Using Skybox to add background ==============//
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
-            Matrix[] skytransforms = new Matrix[model.Bones.Count];
+            var skytransforms = new Matrix[model.Bones.Count];
             model.CopyAbsoluteBoneTransformsTo(skytransforms);
 
-            foreach (ModelMesh mesh in model.Meshes)
+            foreach (var mesh in model.Meshes)
             {
                 // Set mesh orientation, and camera projection
                 foreach (BasicEffect effect in mesh.Effects)
@@ -117,12 +120,13 @@ namespace SolarSystem
                     effect.TextureEnabled = true;
                     effect.Texture = texture;
                     effect.AmbientLightColor = new Vector3(1, 1, 1);
-                    effect.World = skytransforms[mesh.ParentBone.Index] * Matrix.CreateScale(2000.0f) * Matrix.CreateTranslation(Camera.Position);
+                    effect.World = skytransforms[mesh.ParentBone.Index]*Matrix.CreateScale(2000.0f)*
+                                   Matrix.CreateTranslation(Camera.Position);
                     //effect.World = skytransforms[mesh.ParentBone.Index] * Matrix.CreateScale(2000.0f) * RotationMatrix * Matrix.CreateTranslation(Camera.Position);
                     effect.View = Camera.View;
                     effect.Projection = Camera.Projection;
                 }
-                
+
                 mesh.Draw();
             }
             //===================== End of Using Skybox ==============//
@@ -130,7 +134,7 @@ namespace SolarSystem
             var state = new DepthStencilState {DepthBufferEnable = true};
             GraphicsDevice.DepthStencilState = state;
 
-            var dt = (float)gameTime.ElapsedGameTime.TotalDays * Setting.Speed;
+            var dt = (float) gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
 
             foreach (var child in Children)
             {
