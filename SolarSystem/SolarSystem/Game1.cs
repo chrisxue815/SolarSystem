@@ -18,6 +18,7 @@ namespace SolarSystem
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
 
+        public Model vernalModel;
         public Model model;
         public Texture2D texture;
 
@@ -63,6 +64,7 @@ namespace SolarSystem
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
+            vernalModel = Content.Load<Model>(@"Models\vernal");
             model = Content.Load<Model>(@"Models\Skybox");
             texture = Content.Load<Texture2D>(@"Textures\space");
 
@@ -142,6 +144,19 @@ namespace SolarSystem
 
             var state = new DepthStencilState {DepthBufferEnable = true};
             GraphicsDevice.DepthStencilState = state;
+
+            foreach (var mesh in vernalModel.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    //effect.EnableDefaultLighting();
+                    effect.DiffuseColor = new Vector3(1.0f, 1.0f, 1.0f);
+                    effect.World = Matrix.CreateScale(0.1f) * Matrix.CreateTranslation(new Vector3(0, 20, -30));
+                    effect.Projection = Camera.Projection;
+                    effect.View = Camera.View;
+                }
+                mesh.Draw();
+            }
 
             var dt = (float) gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
 
