@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace SolarSystem
 {
@@ -19,6 +20,9 @@ namespace SolarSystem
 
         public Model model;
         public Texture2D texture;
+
+        private SoundEffect soundEffect;
+        private SoundEffectInstance soundEffectIns;
 
         public static Game1 Instance { get; private set; }
 
@@ -60,6 +64,12 @@ namespace SolarSystem
 
             model = Content.Load<Model>("Skybox");
             texture = Content.Load<Texture2D>("space");
+
+            soundEffect = Content.Load<SoundEffect>("sound");
+            soundEffectIns = soundEffect.CreateInstance();
+            soundEffectIns.Volume = 1.0f;
+            soundEffectIns.IsLooped = true;
+            soundEffectIns.Play();
 
             foreach (var child in Children)
             {
