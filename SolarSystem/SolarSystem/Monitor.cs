@@ -25,12 +25,14 @@ namespace SolarSystem
 
             Help.Add("");
             Help.Add("Esc: Quit");
-            Help.Add("Up: Speed up motion");
-            Help.Add("Down: Slowdown motion");
+            Help.Add("Up: Speedup");
+            Help.Add("Down: Slowdown");
             Help.Add("Space: Pause");
             Help.Add("");
-            Help.Add("1: General view");
-            Help.Add("2: Earth's view");
+            Help.Add("1: Overlook");
+            Help.Add("2: Sunrise");
+            Help.Add("3: Sunset");
+            Help.Add("Alt-Enter: Full screen");
             Help.Add("");
             Help.Add("P: Show Earth's revolution orbit");
             Help.Add("O: Show Earth's rotation   orbit");

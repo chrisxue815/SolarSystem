@@ -15,6 +15,8 @@ namespace SolarSystem
         public Moon Moon { get; set; }
         public List<GameEntity> Children { get; private set; }
 
+        public int WindowWidth { get; set; }
+        public int WindowHeight { get; set; }
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
 
@@ -28,9 +30,12 @@ namespace SolarSystem
 
         public Game1()
         {
+            WindowWidth = 800;
+            WindowHeight = 600;
+
             Graphics = new GraphicsDeviceManager(this);
-            Graphics.PreferredBackBufferWidth = 1366;
-            Graphics.PreferredBackBufferHeight = 768;
+            Graphics.PreferredBackBufferWidth = WindowWidth;
+            Graphics.PreferredBackBufferHeight = WindowHeight;
             Graphics.PreferMultiSampling = true;
             Graphics.SynchronizeWithVerticalRetrace = true;
             Graphics.ApplyChanges();
