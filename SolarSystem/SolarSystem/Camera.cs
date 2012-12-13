@@ -67,15 +67,15 @@ namespace SolarSystem
             {
                 var earth = Game.Earth;
 
-                Up = Vector3.Transform(Vector3.Backward,
+                var relativeUp = Vector3.Transform(Vector3.Backward,
                                   Matrix.CreateRotationZ(Earth.EclipticObliquity)*
                                   Matrix.CreateFromAxisAngle(earth.Up, earth.Rotation));
-                Up.Normalize();
+                relativeUp.Normalize();
 
-                Position = earth.Position + Up*Earth.Radius;
+                Position = earth.Position + relativeUp * Earth.Radius;
+                Target = Position + relativeUp;
 
-                var earthLeft = Vector3.Cross(Up, earth.Up);
-                Target = Position - earthLeft;
+                Up = earth.Up;
 
                 perspectiveChanged = true;
             }
