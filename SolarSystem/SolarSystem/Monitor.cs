@@ -81,16 +81,6 @@ namespace SolarSystem
 
             Info.Add(date);
             Info.Add(time);
-
-            /*
-            Speed.Clear();
-            Speed.Add("Earth");
-            Speed.Add("  Revolution Speed: 29.8 km/s");
-            Speed.Add("  Rotation Speed: 15 degree/s");
-            Speed.Add("Moon");
-            Speed.Add("  Revolution Speed: 1.02 km/s");
-            Speed.Add("  Rotation Speed: 1.54 degree/s");
-             */
         }
 
         public override void Draw(float dt)
@@ -137,15 +127,6 @@ namespace SolarSystem
                     Game.SpriteBatch.DrawString(Font, help, pos, Color.White);
                 }
             }
-
-            /*
-            pos = new Vector2(1080, 590);
-            foreach (var speed in Speed)
-            {
-                Game.SpriteBatch.DrawString(Font, speed, pos, Color.White);
-                pos += new Vector2(0, 20);
-            }
-             */
         }
     }
 }

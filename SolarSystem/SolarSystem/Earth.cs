@@ -125,7 +125,8 @@ namespace SolarSystem
             // revolution
             var revolutionAngle = RevolutionAngularSpeed*dt;
             Revolution += revolutionAngle;
-            if (Revolution > MathHelper.TwoPi) Revolution %= MathHelper.TwoPi;
+            if (Math.Abs(Revolution) > MathHelper.TwoPi) Revolution %= MathHelper.TwoPi;
+            if (Revolution < 0) Revolution += MathHelper.TwoPi;
             RelativePosition = Vector3.Transform(RevolutionBasis, Matrix.CreateRotationY(Revolution));
 
             // rotation axis
@@ -135,11 +136,14 @@ namespace SolarSystem
             // rotation
             var rotationAngle = RotationAngularSpeed*dt;
             Rotation += rotationAngle;
+            if (Math.Abs(Rotation) > MathHelper.TwoPi) Rotation %= MathHelper.TwoPi;
+            if (Rotation < 0) Rotation += MathHelper.TwoPi;
 
             if (rotationAngle > MathHelper.Pi)
             {
                 RotationInFastSpeed += 1f;
-                if (RotationInFastSpeed > MathHelper.TwoPi) RotationInFastSpeed %= MathHelper.TwoPi;
+                if (Math.Abs(RotationInFastSpeed) > MathHelper.TwoPi) RotationInFastSpeed %= MathHelper.TwoPi;
+                if (RotationInFastSpeed < 0) RotationInFastSpeed += MathHelper.TwoPi;
                 LocalTransform = Scale*Matrix.CreateFromAxisAngle(Up, RotationInFastSpeed);
             }
             else
