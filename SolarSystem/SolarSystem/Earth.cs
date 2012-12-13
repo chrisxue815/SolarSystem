@@ -82,7 +82,7 @@ namespace SolarSystem
             // vernal equinox
             RevolutionBasis = new Vector3(0, 0, -RevolutionRadius);
 
-            Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
+            Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius)) * Matrix.CreateRotationZ(EclipticObliquity);
 
             BasicEffect = new BasicEffect(Game.GraphicsDevice);
 
@@ -123,7 +123,7 @@ namespace SolarSystem
         public override void Update(float dt)
         {
             // revolution
-            var revolutionAngle = RevolutionAngularSpeed * dt;
+            var revolutionAngle = RevolutionAngularSpeed*dt;
             Revolution += revolutionAngle;
             if (Revolution > MathHelper.TwoPi) Revolution %= MathHelper.TwoPi;
             RelativePosition = Vector3.Transform(RevolutionBasis, Matrix.CreateRotationY(Revolution));
@@ -133,20 +133,18 @@ namespace SolarSystem
             RotationAxisPointList[1] = new VertexPositionColor(Position - RotationAxis, Color.Red);
 
             // rotation
-            var rotationAngle = RotationAngularSpeed * dt;
+            var rotationAngle = RotationAngularSpeed*dt;
             Rotation += rotationAngle;
 
             if (rotationAngle > MathHelper.Pi)
             {
                 RotationInFastSpeed += 1f;
                 if (RotationInFastSpeed > MathHelper.TwoPi) RotationInFastSpeed %= MathHelper.TwoPi;
-                LocalTransform = Scale*Matrix.CreateRotationZ(EclipticObliquity)*
-                                 Matrix.CreateFromAxisAngle(Up, RotationInFastSpeed);
+                LocalTransform = Scale*Matrix.CreateFromAxisAngle(Up, RotationInFastSpeed);
             }
             else
             {
-                LocalTransform = Scale * Matrix.CreateRotationZ(EclipticObliquity) *
-                 Matrix.CreateFromAxisAngle(Up, Rotation);
+                LocalTransform = Scale*Matrix.CreateFromAxisAngle(Up, Rotation);
             }
 
             InitRotPointList();

@@ -63,6 +63,23 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
+            if (perspective == 4)
+            {
+                var earth = Game.Earth;
+
+                Up = Vector3.Transform(Vector3.Backward,
+                                  Matrix.CreateRotationZ(Earth.EclipticObliquity)*
+                                  Matrix.CreateFromAxisAngle(earth.Up, earth.Rotation));
+                Up.Normalize();
+
+                Position = earth.Position + Up*Earth.Radius;
+
+                var earthLeft = Vector3.Cross(Up, earth.Up);
+                Target = Position - earthLeft;
+
+                perspectiveChanged = true;
+            }
+
             previousPerspective = perspective;
 
             if (perspectiveChanged)
