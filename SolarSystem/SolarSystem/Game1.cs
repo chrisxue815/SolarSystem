@@ -88,19 +88,16 @@ namespace SolarSystem
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            var dt = (float)gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
+            var dt = (float) gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
 
             Setting.Update(dt);
 
-            if (!Setting.Pause)
+            foreach (var child in Children)
             {
-                foreach (var child in Children)
-                {
-                    child.Update(dt);
-                }
-
-                Camera.Update(dt);
+                child.Update(dt);
             }
+
+            Camera.Update(dt);
 
             base.Update(gameTime);
         }

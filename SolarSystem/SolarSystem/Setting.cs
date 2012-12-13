@@ -74,16 +74,20 @@ namespace SolarSystem
                         ShowMoonRevolutionAxis = !ShowMoonRevolutionAxis;
                         break;
                     case Keys.Up:
-                        if (speedIndex <= PossibleSpeeds.Length - 2)
+                        if (Pause)
                         {
                             Pause = false;
-                            Speed = PossibleSpeeds[++speedIndex];
+                            speedIndex = 0;
                         }
+                        else if (speedIndex <= PossibleSpeeds.Length - 2)
+                        {
+                            ++speedIndex;
+                        }
+                        Speed = PossibleSpeeds[speedIndex];
                         break;
                     case Keys.Down:
-                        if (speedIndex >= 1)
+                        if (!Pause && speedIndex >= 1)
                         {
-                            Pause = false;
                             Speed = PossibleSpeeds[--speedIndex];
                         }
                         break;
