@@ -15,15 +15,21 @@ namespace SolarSystem
         public bool ShowMoonRotationAxis { get; set; }
         public bool ShowHelp { get; set; }
 
-        private readonly int[] PossibleSpeeds = { 1, 1000, 10000, 100000, 500000, 1000000, 5000000, 10000000 };
-        private int speedIndex;
+        private static readonly int[] PossibleSpeeds =
+            {
+                -10000000, -5000000, -1000000, -500000, -100000, -10000, -1000, -1, 0,
+                1, 1000, 10000, 100000, 500000, 1000000, 5000000, 10000000
+            };
+        private static readonly int ZeroIndex = PossibleSpeeds.Length / 2;
+        private int SpeedIndex { get; set; }
 
         private Keys[] PreviousKeys { get; set; }
 
         public Setting()
         {
             Perspective = 1;
-            Speed = PossibleSpeeds[0];
+            SpeedIndex = ZeroIndex + 1;
+            Speed = PossibleSpeeds[SpeedIndex];
             Pause = false;
 
             FullScreen = false;
@@ -80,23 +86,29 @@ namespace SolarSystem
                         if (Pause)
                         {
                             Pause = false;
-                            speedIndex = 0;
+                            SpeedIndex = ZeroIndex + 1;
                         }
-                        else if (speedIndex <= PossibleSpeeds.Length - 2)
+                        else if (SpeedIndex <= PossibleSpeeds.Length - 2)
                         {
-                            ++speedIndex;
+                            ++SpeedIndex;
                         }
-                        Speed = PossibleSpeeds[speedIndex];
+                        Speed = PossibleSpeeds[SpeedIndex];
                         break;
                     case Keys.Down:
-                        if (!Pause && speedIndex >= 1)
+                        if (Pause)
                         {
-                            Speed = PossibleSpeeds[--speedIndex];
+                            Pause = false;
+                            SpeedIndex = ZeroIndex - 1;
                         }
+                        else if (SpeedIndex >= 1)
+                        {
+                            --SpeedIndex;
+                        }
+                        Speed = PossibleSpeeds[SpeedIndex];
                         break;
                     case Keys.Space:
                         Pause = !Pause;
-                        Speed = Pause ? 0 : PossibleSpeeds[speedIndex];
+                        Speed = Pause ? 0 : PossibleSpeeds[SpeedIndex];
                         break;
                 }
             }

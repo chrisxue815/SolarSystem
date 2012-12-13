@@ -33,11 +33,13 @@ namespace SolarSystem
             WindowWidth = 800;
             WindowHeight = 600;
 
-            Graphics = new GraphicsDeviceManager(this);
-            Graphics.PreferredBackBufferWidth = WindowWidth;
-            Graphics.PreferredBackBufferHeight = WindowHeight;
-            Graphics.PreferMultiSampling = true;
-            Graphics.SynchronizeWithVerticalRetrace = true;
+            Graphics = new GraphicsDeviceManager(this)
+                           {
+                               PreferredBackBufferWidth = WindowWidth,
+                               PreferredBackBufferHeight = WindowHeight,
+                               PreferMultiSampling = true,
+                               SynchronizeWithVerticalRetrace = true
+                           };
             Graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
