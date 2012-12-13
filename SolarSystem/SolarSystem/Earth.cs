@@ -32,6 +32,7 @@ namespace SolarSystem
         public float Rotation { get; set; }
         private float RotationInFastSpeed { get; set; }
         private Vector3 RotationAxis { get; set; }
+        public Matrix RotationTransform { get; set; }
 
         private Sun Sun { get; set; }
 
@@ -82,7 +83,7 @@ namespace SolarSystem
             // vernal equinox
             RevolutionBasis = new Vector3(0, 0, -RevolutionRadius);
 
-            Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius)) * Matrix.CreateRotationZ(EclipticObliquity);
+            Scale = Matrix.CreateScale(Radius);
 
             BasicEffect = new BasicEffect(Game.GraphicsDevice);
 
@@ -144,11 +145,13 @@ namespace SolarSystem
                 RotationInFastSpeed += 1f;
                 if (Math.Abs(RotationInFastSpeed) > MathHelper.TwoPi) RotationInFastSpeed %= MathHelper.TwoPi;
                 if (RotationInFastSpeed < 0) RotationInFastSpeed += MathHelper.TwoPi;
-                LocalTransform = Scale*Matrix.CreateFromAxisAngle(Up, RotationInFastSpeed);
+                RotationTransform = Matrix.CreateRotationZ(EclipticObliquity) * Matrix.CreateFromAxisAngle(Up, RotationInFastSpeed);
+                LocalTransform = Scale * RotationTransform;
             }
             else
             {
-                LocalTransform = Scale*Matrix.CreateFromAxisAngle(Up, Rotation);
+                RotationTransform = Matrix.CreateRotationZ(EclipticObliquity) * Matrix.CreateFromAxisAngle(Up, Rotation);
+                LocalTransform = Scale * RotationTransform;
             }
 
             InitRotPointList();

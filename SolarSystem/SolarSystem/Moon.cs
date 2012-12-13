@@ -50,7 +50,7 @@ namespace SolarSystem
 
             RelativePosition = new Vector3(0, 0, RevolutionRadius);
 
-            Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
+            Scale = Matrix.CreateScale(Radius);
 
             ModelName = @"Models\moon";
 

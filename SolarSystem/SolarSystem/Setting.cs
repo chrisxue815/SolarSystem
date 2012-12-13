@@ -15,6 +15,8 @@ namespace SolarSystem
         public bool ShowMoonRotationAxis { get; set; }
         public bool ShowHelp { get; set; }
 
+        public bool LaunchSatellite { get; set; }
+
         private static readonly int[] PossibleSpeeds =
             {
                 -10000000, -5000000, -1000000, -500000, -100000, -10000, -1000, -1, 0,
@@ -24,6 +26,8 @@ namespace SolarSystem
         private int SpeedIndex { get; set; }
 
         private Keys[] PreviousKeys { get; set; }
+
+        private ButtonState PreviousButtonState { get; set; }
 
         public Setting()
         {
@@ -42,6 +46,8 @@ namespace SolarSystem
 
         public override void Update(float dt)
         {
+            if (!Game.IsActive) return;
+
             var keys = Keyboard.GetState().GetPressedKeys();
 
             foreach (var key in keys)
@@ -114,6 +120,19 @@ namespace SolarSystem
             }
 
             PreviousKeys = keys;
+
+            var buttonState = Mouse.GetState().LeftButton;
+
+            if (PreviousButtonState == ButtonState.Released && buttonState == ButtonState.Pressed)
+            {
+                LaunchSatellite = true;
+            }
+            else
+            {
+                LaunchSatellite = false;
+            }
+
+            PreviousButtonState = buttonState;
         }
     }
 }

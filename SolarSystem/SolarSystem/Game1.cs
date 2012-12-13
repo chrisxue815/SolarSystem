@@ -93,6 +93,13 @@ namespace SolarSystem
                 child.Update(dt);
             }
 
+            if (Setting.LaunchSatellite)
+            {
+                var satellite = new Satellite();
+                satellite.LoadContent();
+                Children.Add(satellite);
+            }
+
             ToggleFullScreen();
 
             Camera.Update(dt);

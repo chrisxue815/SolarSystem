@@ -11,7 +11,7 @@ namespace SolarSystem
         {
             Position = new Vector3(x, y, z);
 
-            Scale = Matrix.CreateScale(new Vector3(Radius, Radius, Radius));
+            Scale = Matrix.CreateScale(Radius);
             LocalTransform = Scale * Matrix.CreateRotationZ(MathHelper.PiOver4) * Matrix.CreateRotationX(MathHelper.PiOver4);
 
             ModelName = @"Models\sun";
