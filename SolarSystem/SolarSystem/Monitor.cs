@@ -26,6 +26,8 @@ namespace SolarSystem
 
             Help.Add("");
             Help.Add("Esc: Quit");
+            Help.Add("Alt-Enter: Full screen");
+            Help.Add("");
             Help.Add("Up: Speedup");
             Help.Add("Down: Slowdown");
             Help.Add("Space: Pause");
@@ -34,7 +36,6 @@ namespace SolarSystem
             Help.Add("2: Side view - sunrise");
             Help.Add("3: Side view - sunset");
             Help.Add("4: Look up to the sky");
-            Help.Add("Alt-Enter: Full screen");
             Help.Add("");
             Help.Add("P: Earth revolution orbit");
             Help.Add("O: Earth rotation   orbit");
@@ -98,22 +99,19 @@ namespace SolarSystem
             var speed = Game.Setting.Speed;
             if ((Math.Abs(speed) / 86400) > 0)
             {
-                speed /= (3600 * 24);
-                relativeSpeed = string.Format("{0:N0} day/s", speed);
+                relativeSpeed = string.Format("{0:N1} day/s", (float)speed / 86400);
             }
             else if ((Math.Abs(speed) / 3600) > 0)
             {
-                speed /= 3600;
-                relativeSpeed = string.Format("{0:N0} hour/s", speed);
+                relativeSpeed = string.Format("{0:N1} hour/s", (float)speed / 3600);
             }
             else if ((Math.Abs(speed) / 60) > 0)
             {
-                speed /= 60;
-                relativeSpeed = string.Format("{0:N0} min/s", speed);
+                relativeSpeed = string.Format("{0:N1} min/s", (float)speed / 60);
             }
             else
             {
-                relativeSpeed = string.Format("{0:N0} s/s", speed);
+                relativeSpeed = string.Format("{0:N1} s/s", (float)speed);
             }
 
             var runningSpeed = string.Format("Speed: x{0:N0} ({1})", Game.Setting.Speed, relativeSpeed);
