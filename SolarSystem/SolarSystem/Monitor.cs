@@ -22,6 +22,20 @@ namespace SolarSystem
             Info = new List<string>();
             Help = new List<string>();
             Speed = new List<string>();
+
+            Help.Add("");
+            Help.Add("Esc: Quit");
+            Help.Add("Up: Speed up motion");
+            Help.Add("Down: Slowdown motion");
+            Help.Add("Space: Pause");
+            Help.Add("");
+            Help.Add("1: General view");
+            Help.Add("2: Earth's view");
+            Help.Add("");
+            Help.Add("P: Show Earth's revolution orbit");
+            Help.Add("O: Show Earth's rotation   orbit");
+            Help.Add("L: Show Moon's revolution  orbit");
+            Help.Add("K: Show Moon's rotation    orbit");
         }
 
         public override void LoadContent()
@@ -60,28 +74,13 @@ namespace SolarSystem
             var hour = (int)(minsFromMidday / 60);
             var minute = (int)(minsFromMidday % 60);
 
-            var date = string.Format("Date: {0} {1}", NamesOfMonths[month], day);
-            var time = string.Format("Time: {0:D2}:{1:D2}", hour, minute);
+            var date = string.Format("UTC Date: {0} {1}", NamesOfMonths[month], day);
+            var time = string.Format("UTC Time: {0:D2}:{1:D2}", hour, minute);
 
             Info.Add(date);
             Info.Add(time);
 
-            Help.Clear();
-            Help.Add("H: Help");
-            Help.Add("");
-            Help.Add("Esc: Quit");
-            Help.Add("Up: Speed up motion");
-            Help.Add("Down: Slowdown motion");
-            Help.Add("Space: Pause");
-            Help.Add("");
-            Help.Add("1: General view");
-            Help.Add("2: Earth's view");
-            Help.Add("");
-            Help.Add("P: Show Earth's revolution orbit");
-            Help.Add("O: Show Earth's rotation   orbit");
-            Help.Add("L: Show Moon's revolution  orbit");
-            Help.Add("K: Show Moon's rotation    orbit");
-
+            /*
             Speed.Clear();
             Speed.Add("Earth");
             Speed.Add("  Revolution Speed: 29.8 km/s");
@@ -89,6 +88,7 @@ namespace SolarSystem
             Speed.Add("Moon");
             Speed.Add("  Revolution Speed: 1.02 km/s");
             Speed.Add("  Rotation Speed: 1.54 degree/s");
+             */
         }
 
         public override void Draw(float dt)
@@ -100,14 +100,40 @@ namespace SolarSystem
                 pos += new Vector2(0, 20);
             }
 
-            var runningSpeed = string.Format("Speed: x {0:N0}", Game.Setting.Speed);
+            string relativeSpeed;
+            var speed = Game.Setting.Speed;
+            if ((speed / 86400) > 0)
+            {
+                speed /= (3600 * 24);
+                relativeSpeed = string.Format("{0:N0} day/s", speed);
+            }
+            else if ((speed/3600) > 0)
+            {
+                speed /= 3600;
+                relativeSpeed = string.Format("{0:N0} hour/s", speed);
+            }
+            else if((speed/60) > 0)
+            {
+                speed /= 60;
+                relativeSpeed = string.Format("{0:N0} min/s", speed);
+            }
+            else
+            {
+                relativeSpeed = string.Format("{0:N0} s/s", speed);
+            }
+
+            var runningSpeed = string.Format("Speed: x{0:N0} ({1})", Game.Setting.Speed, relativeSpeed);
             Game.SpriteBatch.DrawString(Font, runningSpeed, new Vector2(630, 10), Color.White);
 
             pos = new Vector2(1125, 10);
-            foreach (var help in Help)
+            Game.SpriteBatch.DrawString(Font, "H: Help", pos, Color.White);
+            if (Game.Setting.ShowHelp)
             {
-                Game.SpriteBatch.DrawString(Font, help, pos, Color.White);
-                pos += new Vector2(0, 20);
+                foreach (var help in Help)
+                {
+                    pos += new Vector2(0, 20);
+                    Game.SpriteBatch.DrawString(Font, help, pos, Color.White);
+                }
             }
 
             /*
