@@ -93,7 +93,7 @@ namespace SolarSystem
 
             SpriteBatch.Begin();
 
-            //=================== Using Skybox =====================//
+            //================ Using Skybox to add background ==============//
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
             Matrix[] skytransforms = new Matrix[model.Bones.Count];
