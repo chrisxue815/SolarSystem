@@ -41,10 +41,10 @@ namespace SolarSystem
                 Up = Game.Earth.Up;
 
                 var toSun = Game.Sun.Position - Game.Earth.Position;
-                var earthRight = Vector3.Cross(Game.Earth.Up, toSun);
-                earthRight.Normalize();
+                var earthLeft = Vector3.Cross(toSun, Game.Earth.Up);
+                earthLeft.Normalize();
 
-                Position = Game.Earth.Position + earthRight * 50;
+                Position = Game.Earth.Position + earthLeft * 50;
 
                 perspectiveChanged = true;
             }

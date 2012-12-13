@@ -11,6 +11,7 @@ namespace SolarSystem
         // logical
         public Vector3 Position { get; set; }
 
+        //TODO: remove unused properties
         //public Vector3 Look { get; set; }
         //public Vector3 Right { get; set; }
         public Vector3 Up { get; set; }
