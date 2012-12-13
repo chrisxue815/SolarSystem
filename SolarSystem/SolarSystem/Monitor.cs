@@ -31,9 +31,9 @@ namespace SolarSystem
             Help.Add("Space: Pause");
             Help.Add("");
             Help.Add("1: Overlook");
-            Help.Add("2: Sunrise");
-            Help.Add("3: Sunset");
-            Help.Add("4: Sunrise on Earth");
+            Help.Add("2: Side view - sunrise");
+            Help.Add("3: Side view - sunset");
+            Help.Add("4: Look up to the sky");
             Help.Add("Alt-Enter: Full screen");
             Help.Add("");
             Help.Add("P: Show Earth's revolution orbit");
