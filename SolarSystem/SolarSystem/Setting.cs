@@ -16,6 +16,7 @@ namespace SolarSystem
         public bool ShowHelp { get; set; }
 
         public bool LaunchSatellite { get; set; }
+        public bool RemoveSatellite { get; set; }
 
         private static readonly int[] PossibleSpeeds =
             {
@@ -27,7 +28,8 @@ namespace SolarSystem
 
         private Keys[] PreviousKeys { get; set; }
 
-        private ButtonState PreviousButtonState { get; set; }
+        private ButtonState PreviousLeftButton { get; set; }
+        private ButtonState PreviousRightButton { get; set; }
 
         public Setting()
         {
@@ -67,6 +69,9 @@ namespace SolarSystem
                         break;
                     case Keys.D4:
                         Perspective = 4;
+                        break;
+                    case Keys.D5:
+                        Perspective = 5;
                         break;
                     case Keys.H:
                         ShowHelp = !ShowHelp;
@@ -121,9 +126,9 @@ namespace SolarSystem
 
             PreviousKeys = keys;
 
-            var buttonState = Mouse.GetState().LeftButton;
-
-            if (PreviousButtonState == ButtonState.Released && buttonState == ButtonState.Pressed)
+            // left button clicked
+            var leftButton = Mouse.GetState().LeftButton;
+            if (PreviousLeftButton == ButtonState.Released && leftButton == ButtonState.Pressed)
             {
                 LaunchSatellite = true;
             }
@@ -131,8 +136,19 @@ namespace SolarSystem
             {
                 LaunchSatellite = false;
             }
+            PreviousLeftButton = leftButton;
 
-            PreviousButtonState = buttonState;
+            // right button clicked
+            var rightButton = Mouse.GetState().RightButton;
+            if (PreviousRightButton == ButtonState.Released && rightButton == ButtonState.Pressed)
+            {
+                RemoveSatellite = true;
+            }
+            else
+            {
+                RemoveSatellite = false;
+            }
+            PreviousRightButton = rightButton;
         }
     }
 }

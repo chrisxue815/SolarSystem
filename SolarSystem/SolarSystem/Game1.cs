@@ -39,13 +39,14 @@ namespace SolarSystem
                                SynchronizeWithVerticalRetrace = true
                            };
             Graphics.ApplyChanges();
+        }
 
+        protected override void Initialize()
+        {
             Setting = new Setting();
             Camera = new Camera();
             Children = new List<GameEntity>();
-        }
-        protected override void Initialize()
-        {
+
             Sun = new Sun(0, 0, 0);
             Earth = new Earth();
             Moon = new Moon();
@@ -53,6 +54,7 @@ namespace SolarSystem
             Children.Add(Sun);
             Children.Add(Earth);
             Children.Add(Moon);
+            Children.Add(new SatelliteManager());
             Children.Add(new Monitor());
 
             base.Initialize();
@@ -91,13 +93,6 @@ namespace SolarSystem
             foreach (var child in Children)
             {
                 child.Update(dt);
-            }
-
-            if (Setting.LaunchSatellite)
-            {
-                var satellite = new Satellite();
-                satellite.LoadContent();
-                Children.Add(satellite);
             }
 
             ToggleFullScreen();

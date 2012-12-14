@@ -110,6 +110,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="Satellite.cs" />
+    <Compile Include="SatelliteManager.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Earth.cs" />
     <Compile Include="GameEntity.cs" />

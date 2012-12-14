@@ -33,7 +33,7 @@ namespace SolarSystem
         public const float Radius = 3f;
 
         // revolution
-        public const float RevolutionRadius = 25f;
+        public const float RevolutionRadius = 35f;
         public const float RevolutionPeriod = 29.53f;
         public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
 
