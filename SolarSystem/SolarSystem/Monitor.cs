@@ -155,7 +155,7 @@ namespace SolarSystem
             }
 
             var runningSpeed = string.Format("Speed: x{0:N0} ({1})", Game.Setting.Speed, relativeSpeed);
-            Game.SpriteBatch.DrawString(Font, runningSpeed, new Vector2(580, 10), Color.White);
+            Game.SpriteBatch.DrawString(Font, runningSpeed, new Vector2(560, 10), Color.White);
 
             pos = new Vector2(1120, 10);
             Game.SpriteBatch.DrawString(Font, "H: Help", pos, Color.White);
