@@ -11,12 +11,12 @@ namespace SolarSystem
         private Sun Sun { get; set; }
         private Earth Earth { get; set; }
 
-        public Text3D()
+        public Text3D(Vector3 pos)
         {
             Sun = Game.Sun;
             Earth = Game.Earth;
 
-            Position = new Vector3(Sun.Position.X, Sun.Position.Y, Sun.Position.Z - Earth.RevolutionRadius);
+            Position = pos;
 
             DiffuseColor = Color.White.ToVector3();
 

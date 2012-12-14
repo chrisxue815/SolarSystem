@@ -13,7 +13,6 @@ namespace SolarSystem
         public Sun Sun { get; set; }
         public Earth Earth { get; set; }
         public Moon Moon { get; set; }
-        public Text3D Vernal { get; set; }
         public List<GameEntity> Children { get; private set; }
 
         public GraphicsDeviceManager Graphics { get; private set; }
@@ -50,13 +49,10 @@ namespace SolarSystem
             Sun = new Sun(0, 0, 0);
             Earth = new Earth();
             Moon = new Moon();
-            Vernal = new Text3D();
-            Vernal.ModelName = @"Models\vernal";
 
             Children.Add(Sun);
             Children.Add(Earth);
             Children.Add(Moon);
-            Children.Add(Vernal);
             Children.Add(new Monitor());
 
             base.Initialize();

@@ -12,6 +12,11 @@ namespace SolarSystem
         private List<string> Help { get; set; }
         private List<string> Speed { get; set; }
 
+        private Text3D Vernal { get; set; }
+        private Text3D Summer { get; set; }
+        private Text3D Autumnal { get; set; }
+        private Text3D Winter { get; set; }
+
         //TODO: leap year
         private readonly int[] NumDaysOfMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -20,6 +25,12 @@ namespace SolarSystem
 
         public Monitor()
         {
+            var radius = Earth.RevolutionRadius;
+            Vernal = new Text3D(new Vector3(0, 0, -radius));
+            Summer = new Text3D(new Vector3(-radius, 0, 0));
+            Autumnal = new Text3D(new Vector3(0, 0, radius));
+            Winter = new Text3D(new Vector3(radius, 0, 0));
+
             Info = new List<string>();
             Help = new List<string>();
             Speed = new List<string>();
@@ -46,6 +57,10 @@ namespace SolarSystem
         public override void LoadContent()
         {
             Font = Game.Content.Load<SpriteFont>(@"Fonts\font1");
+            Vernal.Model = Game.Content.Load<Model>(@"Models\vernal");
+            Summer.Model = Game.Content.Load<Model>(@"Models\summer");
+            Autumnal.Model = Game.Content.Load<Model>(@"Models\autumnal");
+            Winter.Model = Game.Content.Load<Model>(@"Models\winter");
         }
 
         public override void Update(float dt)
@@ -88,6 +103,24 @@ namespace SolarSystem
 
         public override void Draw(float dt)
         {
+            var angle = Game.Earth.Revolution;
+            if (angle < MathHelper.PiOver4 / 2)
+            {
+                Vernal.Draw(dt);
+            }
+            else if (Math.Abs(angle - MathHelper.PiOver4) < 1)
+            {
+                Summer.Draw(dt);
+            }
+            else if (Math.Abs(angle - MathHelper.PiOver2) < 1)
+            {
+                Autumnal.Draw(dt);
+            }
+            else if (Math.Abs(angle - MathHelper.PiOver4*3) < 1)
+            {
+                Winter.Draw(dt);
+            }
+
             var pos = new Vector2(10, 10);
             foreach (var info in Info)
             {
