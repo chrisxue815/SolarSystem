@@ -36,6 +36,7 @@ namespace SolarSystem
             Help = new List<string>();
             Speed = new List<string>();
 
+            // Help info
             Help.Add("");
             Help.Add("Esc: Quit");
             Help.Add("Alt-Enter: Full screen");
@@ -64,12 +65,14 @@ namespace SolarSystem
         {
             Font = Game.Content.Load<SpriteFont>(@"Fonts\font1");
             Font2 = Game.Content.Load<SpriteFont>(@"Fonts\font2");
+
             Vernal.Model = Game.Content.Load<Model>(@"Models\vernal");
             Summer.Model = Game.Content.Load<Model>(@"Models\summer");
             Autumnal.Model = Game.Content.Load<Model>(@"Models\autumnal");
             Winter.Model = Game.Content.Load<Model>(@"Models\winter");
         }
 
+        /* Update date and time */
         public override void Update(float dt)
         {
             Info.Clear();
@@ -80,6 +83,7 @@ namespace SolarSystem
             var month = 2;
             var day = 21;
 
+            // Calculate date and time
             for (; ; )
             {
                 var numDaysInMonth = NumDaysOfMonths[month];
@@ -110,6 +114,7 @@ namespace SolarSystem
 
         public override void Draw(float dt)
         {
+            // Draw 3D text to indicate vernal, summer, autumnal and winter equinox
             const float piOver8 = MathHelper.PiOver2/4;
             var angle = Game.Earth.Revolution;
             if (angle > 0 && angle < piOver8 || angle > piOver8 * 15)
@@ -129,6 +134,7 @@ namespace SolarSystem
                 Winter.Draw(dt);
             }
 
+            // Draw date and time
             var pos = new Vector2(10, 10);
             foreach (var info in Info)
             {
@@ -136,6 +142,7 @@ namespace SolarSystem
                 pos += new Vector2(0, 20);
             }
 
+            // Draw speed
             string relativeSpeed;
             var speed = Game.Setting.Speed;
             if ((Math.Abs(speed) / 86400) > 0)
@@ -158,6 +165,7 @@ namespace SolarSystem
             var runningSpeed = string.Format("Speed: x{0:N0} ({1})", Game.Setting.Speed, relativeSpeed);
             Game.SpriteBatch.DrawString(Font, runningSpeed, new Vector2(560, 10), Color.White);
 
+            // Draw help info
             pos = new Vector2(1120, 10);
             Game.SpriteBatch.DrawString(Font, "H: Help", pos, Color.White);
             if (Game.Setting.ShowHelp)
