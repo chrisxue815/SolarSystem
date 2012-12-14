@@ -159,8 +159,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Skybox.X">
-      <Name>Skybox</Name>
+    <Compile Include="Models\skybox.X">
+      <Name>skybox</Name>
       <Importer>XImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
