@@ -12,6 +12,11 @@ namespace SolarSystem
         private List<string> Help { get; set; }
         private List<string> Speed { get; set; }
 
+        private Text3D Vernal { get; set; }
+        private Text3D Summer { get; set; }
+        private Text3D Autumnal { get; set; }
+        private Text3D Winter { get; set; }
+
         //TODO: leap year
         private readonly int[] NumDaysOfMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -20,12 +25,20 @@ namespace SolarSystem
 
         public Monitor()
         {
+            var radius = Earth.RevolutionRadius;
+            Vernal = new Text3D(new Vector3(0, 0, -radius));
+            Summer = new Text3D(new Vector3(-radius, 0, 0));
+            Autumnal = new Text3D(new Vector3(0, 0, radius));
+            Winter = new Text3D(new Vector3(radius, 0, 0));
+
             Info = new List<string>();
             Help = new List<string>();
             Speed = new List<string>();
 
             Help.Add("");
             Help.Add("Esc: Quit");
+            Help.Add("Alt-Enter: Full screen");
+            Help.Add("");
             Help.Add("Up: Speedup");
             Help.Add("Down: Slowdown");
             Help.Add("Space: Pause");
@@ -34,7 +47,6 @@ namespace SolarSystem
             Help.Add("2: Side view - sunrise");
             Help.Add("3: Side view - sunset");
             Help.Add("4: Look up to the sky");
-            Help.Add("Alt-Enter: Full screen");
             Help.Add("");
             Help.Add("P: Earth revolution orbit");
             Help.Add("O: Earth rotation   orbit");
@@ -45,6 +57,10 @@ namespace SolarSystem
         public override void LoadContent()
         {
             Font = Game.Content.Load<SpriteFont>(@"Fonts\font1");
+            Vernal.Model = Game.Content.Load<Model>(@"Models\vernal");
+            Summer.Model = Game.Content.Load<Model>(@"Models\summer");
+            Autumnal.Model = Game.Content.Load<Model>(@"Models\autumnal");
+            Winter.Model = Game.Content.Load<Model>(@"Models\winter");
         }
 
         public override void Update(float dt)
@@ -87,6 +103,25 @@ namespace SolarSystem
 
         public override void Draw(float dt)
         {
+            const float piOver8 = MathHelper.PiOver2/4;
+            var angle = Game.Earth.Revolution;
+            if (angle > 0 && angle < piOver8)
+            {
+                Vernal.Draw(dt);
+            }
+            else if (angle > MathHelper.PiOver2 && angle < piOver8 * 5)
+            {
+                Summer.Draw(dt);
+            }
+            else if (angle > MathHelper.Pi && angle < piOver8 * 9)
+            {
+                Autumnal.Draw(dt);
+            }
+            else if (angle > MathHelper.PiOver2 * 3 && angle < piOver8 * 13)
+            {
+                Winter.Draw(dt);
+            }
+
             var pos = new Vector2(10, 10);
             foreach (var info in Info)
             {
@@ -98,22 +133,19 @@ namespace SolarSystem
             var speed = Game.Setting.Speed;
             if ((Math.Abs(speed) / 86400) > 0)
             {
-                speed /= (3600 * 24);
-                relativeSpeed = string.Format("{0:N0} day/s", speed);
+                relativeSpeed = string.Format("{0:N1} day/s", (float)speed / 86400);
             }
             else if ((Math.Abs(speed) / 3600) > 0)
             {
-                speed /= 3600;
-                relativeSpeed = string.Format("{0:N0} hour/s", speed);
+                relativeSpeed = string.Format("{0:N1} hour/s", (float)speed / 3600);
             }
             else if ((Math.Abs(speed) / 60) > 0)
             {
-                speed /= 60;
-                relativeSpeed = string.Format("{0:N0} min/s", speed);
+                relativeSpeed = string.Format("{0:N1} min/s", (float)speed / 60);
             }
             else
             {
-                relativeSpeed = string.Format("{0:N0} s/s", speed);
+                relativeSpeed = string.Format("{0:N1} s/s", (float)speed);
             }
 
             var runningSpeed = string.Format("Speed: x{0:N0} ({1})", Game.Setting.Speed, relativeSpeed);

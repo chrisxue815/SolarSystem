@@ -142,9 +142,6 @@ namespace SolarSystem
             }
             //===================== End of Using Skybox ==============//
 
-            var state = new DepthStencilState {DepthBufferEnable = true};
-            GraphicsDevice.DepthStencilState = state;
-
             var dt = (float) gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
 
             foreach (var child in Children)
