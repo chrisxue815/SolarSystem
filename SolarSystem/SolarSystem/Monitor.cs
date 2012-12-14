@@ -43,15 +43,19 @@ namespace SolarSystem
             Help.Add("Down: Slowdown");
             Help.Add("Space: Pause");
             Help.Add("");
-            Help.Add("1: Overlook");
-            Help.Add("2: Side view - sunrise");
-            Help.Add("3: Side view - sunset");
-            Help.Add("4: Look up to the sky");
-            Help.Add("");
             Help.Add("P: Earth revolution orbit");
             Help.Add("O: Earth rotation   orbit");
             Help.Add("L: Moon  revolution orbit");
             Help.Add("K: Moon  rotation   orbit");
+            Help.Add("");
+            Help.Add("1: Overlook");
+            Help.Add("2: Side - sunrise");
+            Help.Add("3: Side - sunset");
+            Help.Add("4: Arctic");
+            Help.Add("5: Look up to the sky");
+            Help.Add("");
+            Help.Add("Left-click: launch a satellite");
+            Help.Add("Right-click: remove all satellites");
         }
 
         public override void LoadContent()
