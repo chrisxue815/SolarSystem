@@ -25,11 +25,11 @@ namespace SolarSystem
 
         public Monitor()
         {
-            var radius = Earth.RevolutionRadius;
-            Vernal = new Text3D(new Vector3(0, 0, -radius));
-            Summer = new Text3D(new Vector3(-radius, 0, 0));
-            Autumnal = new Text3D(new Vector3(0, 0, radius));
-            Winter = new Text3D(new Vector3(radius, 0, 0));
+            const float radius = Earth.RevolutionRadius;
+            Vernal = new Text3D(new Vector3(0, 20, -radius));
+            Summer = new Text3D(new Vector3(-radius, 20, 0));
+            Autumnal = new Text3D(new Vector3(0, 20, radius));
+            Winter = new Text3D(new Vector3(radius, 20, 0));
 
             Info = new List<string>();
             Help = new List<string>();
