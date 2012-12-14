@@ -48,7 +48,6 @@ namespace SolarSystem
             Earth = new Earth();
             Moon = new Moon();
 
-            Children.Add(Skybox);
             Children.Add(Sound);
             Children.Add(Sun);
             Children.Add(Earth);
@@ -63,6 +62,8 @@ namespace SolarSystem
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+            Skybox.LoadContent();
             
             foreach (var child in Children)
             {
@@ -103,11 +104,16 @@ namespace SolarSystem
 
         protected override void Draw(GameTime gameTime)
         {
+            var dt = (float)gameTime.ElapsedGameTime.TotalDays * Setting.Speed;
+
             GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.Begin();
 
-            var dt = (float) gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
+            Skybox.Draw(dt);
+
+            var state = new DepthStencilState { DepthBufferEnable = true };
+            GraphicsDevice.DepthStencilState = state;
 
             foreach (var child in Children)
             {
