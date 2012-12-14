@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace SolarSystem
 {
@@ -19,14 +18,15 @@ namespace SolarSystem
             Target = new Vector3(0, 0, 20);
             Up = Vector3.Cross(Vector3.Right, Target - Position);
 
+            // Calculate view and projection
             Calculate();
         }
 
         public override void Update(float dt)
         {
             var perspective = Game.Setting.Perspective;
-
-            // 
+            
+            // Camera's overlook view
             if (perspective == 1 && previousPerspective != 1)
             {
                 Position = new Vector3(0, 100, 200);
@@ -36,6 +36,7 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
+            // Camera's side view of the Earth - sunrise
             if (perspective == 2)
             {
                 Target = Game.Earth.Position;
@@ -50,6 +51,7 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
+            // Camera's side view of the Earth - sunset
             if (perspective == 3)
             {
                 Target = Game.Earth.Position;
@@ -64,6 +66,7 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
+            // Camera's view from the Arctic
             if (perspective == 4)
             {
                 var earth = Game.Earth;
@@ -75,6 +78,7 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
+            // Camera's view on the Earth - look up to the sky
             if (perspective == 5)
             {
                 var earth = Game.Earth;
@@ -101,6 +105,7 @@ namespace SolarSystem
             }
         }
 
+        /* Calculate view and projection */
         private void Calculate()
         {
             View = Matrix.CreateLookAt(Position, Target, Up);
