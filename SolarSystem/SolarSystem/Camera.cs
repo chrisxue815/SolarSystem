@@ -26,6 +26,7 @@ namespace SolarSystem
         {
             var perspective = Game.Setting.Perspective;
 
+            // 
             if (perspective == 1 && previousPerspective != 1)
             {
                 Position = new Vector3(0, 100, 200);
