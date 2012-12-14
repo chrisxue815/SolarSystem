@@ -109,19 +109,19 @@ namespace SolarSystem
         {
             const float piOver8 = MathHelper.PiOver2/4;
             var angle = Game.Earth.Revolution;
-            if (angle > 0 && angle < piOver8)
+            if (angle > 0 && angle < piOver8 || angle > piOver8 * 15)
             {
                 Vernal.Draw(dt);
             }
-            else if (angle > MathHelper.PiOver2 && angle < piOver8 * 5)
+            else if (angle > piOver8 * 3 && angle < piOver8 * 5)
             {
                 Summer.Draw(dt);
             }
-            else if (angle > MathHelper.Pi && angle < piOver8 * 9)
+            else if (angle > piOver8 * 7 && angle < piOver8 * 9)
             {
                 Autumnal.Draw(dt);
             }
-            else if (angle > MathHelper.PiOver2 * 3 && angle < piOver8 * 13)
+            else if (angle > piOver8 * 11 && angle < piOver8 * 13)
             {
                 Winter.Draw(dt);
             }
