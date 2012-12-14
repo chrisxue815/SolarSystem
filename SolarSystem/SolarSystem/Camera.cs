@@ -8,7 +8,7 @@ namespace SolarSystem
         public Matrix Projection { get; private set; }
         public Matrix View { get; private set; }
 
-        private Vector3 Target { get; set; }
+        public Vector3 Target { get; set; }
 
         private int previousPerspective = 1;
         private bool perspectiveChanged;
