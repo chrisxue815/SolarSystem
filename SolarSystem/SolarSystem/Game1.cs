@@ -14,13 +14,11 @@ namespace SolarSystem
         public Earth Earth { get; set; }
         public Moon Moon { get; set; }
         public Skybox Skybox { get; set; }
+        public Sound Sound { get; set; }
         public List<GameEntity> Children { get; private set; }
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
-
-        private SoundEffect soundEffect;
-        private SoundEffectInstance soundEffectIns;
 
         public static Game1 Instance { get; private set; }
 
@@ -45,12 +43,14 @@ namespace SolarSystem
             Camera = new Camera();
             Children = new List<GameEntity>();
 
+            Skybox = new Skybox();
+            Sound = new Sound();
             Sun = new Sun(0, 0, 0);
             Earth = new Earth();
             Moon = new Moon();
-            Skybox = new Skybox();
 
             Children.Add(Skybox);
+            Children.Add(Sound);
             Children.Add(Sun);
             Children.Add(Earth);
             Children.Add(Moon);
@@ -64,13 +64,7 @@ namespace SolarSystem
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-
-            soundEffect = Content.Load<SoundEffect>(@"Sound\sound");
-            soundEffectIns = soundEffect.CreateInstance();
-            soundEffectIns.Volume = 1.0f;
-            soundEffectIns.IsLooped = true;
-            soundEffectIns.Play();
-
+            
             foreach (var child in Children)
             {
                 child.LoadContent();
