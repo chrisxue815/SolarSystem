@@ -37,6 +37,16 @@ namespace SolarSystem
 
             if (perspective == 2)
             {
+                
+            }
+
+            if (perspective == 3)
+            {
+                
+            }
+
+            if (perspective == 4)
+            {
                 Target = Game.Earth.Position;
                 Up = Game.Earth.Up;
 
@@ -49,7 +59,7 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
-            if (perspective == 3)
+            if (perspective == 5)
             {
                 Target = Game.Earth.Position;
                 Up = Game.Earth.Up;
@@ -63,7 +73,7 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
-            if (perspective == 4)
+            if (perspective == 6)
             {
                 var earth = Game.Earth;
 
@@ -74,7 +84,7 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
-            if (perspective == 5)
+            if (perspective == 7)
             {
                 var earth = Game.Earth;
 

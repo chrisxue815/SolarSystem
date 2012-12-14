@@ -24,7 +24,7 @@ namespace SolarSystem
         {
             Earth = Game.Earth;
 
-            DiffuseColor = Color.Gray.ToVector3();
+            DiffuseColor = new Vector3((float)Random.NextDouble(), (float)Random.NextDouble(), (float)Random.NextDouble());
 
             // generate a random initial position
             RelativePosition = new Vector3(GroundHeight, 0, 0);

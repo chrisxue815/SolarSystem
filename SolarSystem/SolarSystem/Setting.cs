@@ -20,8 +20,8 @@ namespace SolarSystem
 
         private static readonly int[] PossibleSpeeds =
             {
-                -10000000, -5000000, -1000000, -500000, -100000, -10000, -1000, -1, 0,
-                1, 1000, 10000, 100000, 500000, 1000000, 5000000, 10000000
+                -10000000, -5000000, -1000000, -500000, -100000, -50000, -10000, -1000, -1, 0,
+                1, 1000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000
             };
         private static readonly int ZeroIndex = PossibleSpeeds.Length / 2;
         private int SpeedIndex { get; set; }
@@ -72,6 +72,12 @@ namespace SolarSystem
                         break;
                     case Keys.D5:
                         Perspective = 5;
+                        break;
+                    case Keys.D6:
+                        Perspective = 6;
+                        break;
+                    case Keys.D7:
+                        Perspective = 7;
                         break;
                     case Keys.H:
                         ShowHelp = !ShowHelp;

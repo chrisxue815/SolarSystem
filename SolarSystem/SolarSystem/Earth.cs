@@ -6,14 +6,9 @@ namespace SolarSystem
 {
     public class Earth : GameEntity
     {
-        // revolution
-        public const float RevolutionRadius = 100f;
-        public const float RevolutionPeriod = 365f;
-        public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
-        
-        public float Revolution { get; set; }
-        private Vector3 RevolutionBasis { get; set; }
+        private Sun Sun { get; set; }
 
+        // relative to sun's position
         private Vector3 relativePosition;
         public Vector3 RelativePosition
         {
@@ -25,20 +20,26 @@ namespace SolarSystem
             }
         }
 
-        // rotation
+        // revolution constants
+        public const float RevolutionRadius = 100f;
+        public const float RevolutionPeriod = 365f;
+        public const float RevolutionAngularSpeed = MathHelper.TwoPi / RevolutionPeriod;
+
+        // revolution
+        public float Revolution { get; set; }
+        private Vector3 RevolutionBasis { get; set; }
+
+        // rotation constants
         public const float RotationPeriod = 0.99726956632908f;
         public const float RotationAngularSpeed = MathHelper.TwoPi / RotationPeriod;
 
+        // rotation
         public float Rotation { get; set; }
         private float RotationInFastSpeed { get; set; }
         private Vector3 RotationAxis { get; set; }
         public Matrix RotationTransform { get; set; }
 
-        private Sun Sun { get; set; }
-
-        private VertexPositionColor[] RotationAxisPointList { get; set; }
-
-        // contents
+        // effects and textures
         private Effect Effect { get; set; }
         private Texture2D DayTexture { get; set; }
         private Texture2D NightTexture { get; set; }
@@ -57,21 +58,20 @@ namespace SolarSystem
         private BoundingSphere bounds;
         private BasicEffect BasicEffect { get; set; }
 
-        // attributes
+        // constants
         public const float Radius = 2f;
         public const float EclipticObliquity = -0.409f;
 
         // drawing revolution orbit
-        short[] lineStripIndices;
-        private const int points = 500;
-        VertexDeclaration vertexDeclaration;
-        VertexBuffer vertexBuffer;
-        private VertexPositionColor[] revOrbitPointList;
+        private short[] lineStripIndices;
+        private const int Points = 500;
+        private VertexBuffer VertexBuffer { get; set; }
+        private VertexPositionColor[] RevolutionPlanePointList { get; set; }
 
         // drawing rotation orbit
-        VertexDeclaration vertexDeclaration2;
-        VertexBuffer vertexBuffer2;
-        private VertexPositionColor[] rotOrbitPointList;
+        private VertexBuffer VertexBuffer2 { get; set; }
+        private VertexPositionColor[] RotationPlanePointList { get; set; }
+        private VertexPositionColor[] RotationAxisPointList { get; set; }
 
         public Earth()
         {
@@ -223,10 +223,10 @@ namespace SolarSystem
         private void InitLineStrip()
         {
             // Initialize an array of indices of type short.
-            lineStripIndices = new short[points];
+            lineStripIndices = new short[Points];
 
             // Populate the array with references to indices in the vertex buffer.
-            for (int i = 0; i < points; i++)
+            for (int i = 0; i < Points; i++)
             {
                 lineStripIndices[i] = (short)(i);
             }
@@ -235,41 +235,37 @@ namespace SolarSystem
         /* Initialize point list on the revolution orbit to be drawn */
         private void InitRevPointList()
         {
-            vertexDeclaration = new VertexDeclaration(VertexPositionTexture.VertexDeclaration.GetVertexElements());
-
-            revOrbitPointList = new VertexPositionColor[points];
+            RevolutionPlanePointList = new VertexPositionColor[Points];
 
             // Add points to the orbit point list
-            for (int i = 0; i < points - 1; i++)
+            for (int i = 0; i < Points - 1; i++)
             {
-                float theta = ((float)MathHelper.TwoPi / points) * i;
+                float theta = (MathHelper.TwoPi / Points) * i;
 
                 float x = RevolutionRadius * (float)Math.Sin(theta);
                 float z = RevolutionRadius * (float)Math.Cos(theta);
-                revOrbitPointList[i] = new VertexPositionColor(new Vector3(x, Position.Y, z), Color.White);
+                RevolutionPlanePointList[i] = new VertexPositionColor(new Vector3(x, Position.Y, z), Color.White);
             }
             // The last point is the same with the starting point
-            revOrbitPointList[points - 1] = revOrbitPointList[0];
+            RevolutionPlanePointList[Points - 1] = RevolutionPlanePointList[0];
 
             // Initialize the vertex buffer, allocating memory for each vertex.
-            vertexBuffer = new VertexBuffer(Game1.Instance.GraphicsDevice, typeof(VertexPositionNormalTexture),
+            VertexBuffer = new VertexBuffer(Game1.Instance.GraphicsDevice, typeof(VertexPositionNormalTexture),
                                     250, BufferUsage.WriteOnly | BufferUsage.None);
 
             // Set the vertex buffer data to the array of vertices.
-            vertexBuffer.SetData<VertexPositionColor>(revOrbitPointList);
+            VertexBuffer.SetData(RevolutionPlanePointList);
         }
 
         /* Initialize point list on the rotation orbit to be drawn */
         private void InitRotPointList()
         {
-            vertexDeclaration2 = new VertexDeclaration(VertexPositionTexture.VertexDeclaration.GetVertexElements());
-
-            rotOrbitPointList = new VertexPositionColor[points];
+            RotationPlanePointList = new VertexPositionColor[Points];
 
             // Add points to the orbit point list
-            for (int i = 0; i < points - 1; i++)
+            for (int i = 0; i < Points - 1; i++)
             {
-                float theta = ((float)MathHelper.TwoPi / points) * i;
+                float theta = (MathHelper.TwoPi / Points) * i;
 
                 float x = Moon.RevolutionRadius * (float)Math.Sin(theta);
                 float z = Moon.RevolutionRadius * (float)Math.Cos(theta);
@@ -282,57 +278,57 @@ namespace SolarSystem
                 orbitPos.X += Position.X;
                 orbitPos.Z += Position.Z;
 
-                rotOrbitPointList[i] = new VertexPositionColor(orbitPos, Color.White);
+                RotationPlanePointList[i] = new VertexPositionColor(orbitPos, Color.White);
             }
             // The last point is the same with the starting point
-            rotOrbitPointList[points - 1] = rotOrbitPointList[0];
+            RotationPlanePointList[Points - 1] = RotationPlanePointList[0];
 
             // Initialize the vertex buffer, allocating memory for each vertex.
-            vertexBuffer2 = new VertexBuffer(Game1.Instance.GraphicsDevice, typeof(VertexPositionNormalTexture),
+            VertexBuffer2 = new VertexBuffer(Game1.Instance.GraphicsDevice, typeof(VertexPositionNormalTexture),
                                     250, BufferUsage.WriteOnly | BufferUsage.None);
 
             // Set the vertex buffer data to the array of vertices.
-            vertexBuffer2.SetData<VertexPositionColor>(rotOrbitPointList);
+            VertexBuffer2.SetData(RotationPlanePointList);
         }
 
         /* Draw lines to connect two points continuously for revolution orbit */
         private void DrawRevolutionOrbit()
         {
-            for (int i = 0; i < revOrbitPointList.Length; i++)
-                revOrbitPointList[i].Color = Color.Red;
+            for (int i = 0; i < RevolutionPlanePointList.Length; i++)
+                RevolutionPlanePointList[i].Color = Color.Red;
 
             Game.GraphicsDevice.DrawUserIndexedPrimitives(
                 PrimitiveType.LineStrip,
-                revOrbitPointList,
+                RevolutionPlanePointList,
                 0,                  // vertex buffer offset to add to each element of the index buffer
-                points,             // number of vertices to draw
+                Points,             // number of vertices to draw
                 lineStripIndices,
                 0,                  // first index element to read
-                points - 1          // number of primitives to draw
+                Points - 1          // number of primitives to draw
             );
 
-            for (int i = 0; i < revOrbitPointList.Length; i++)
-                revOrbitPointList[i].Color = Color.White;
+            for (int i = 0; i < RevolutionPlanePointList.Length; i++)
+                RevolutionPlanePointList[i].Color = Color.White;
         }
 
         /* Draw lines to connect two points continuously for rotation orbit */
         private void DrawRotationOrbit()
         {
-            for (int i = 0; i < rotOrbitPointList.Length; i++)
-                rotOrbitPointList[i].Color = Color.Red;
+            for (int i = 0; i < RotationPlanePointList.Length; i++)
+                RotationPlanePointList[i].Color = Color.Red;
 
             Game.GraphicsDevice.DrawUserIndexedPrimitives(
                 PrimitiveType.LineStrip,
-                rotOrbitPointList,
+                RotationPlanePointList,
                 0,                  // vertex buffer offset to add to each element of the index buffer
-                points,             // number of vertices to draw
+                Points,             // number of vertices to draw
                 lineStripIndices,
                 0,                  // first index element to read
-                points - 1          // number of primitives to draw
+                Points - 1          // number of primitives to draw
             );
 
-            for (int i = 0; i < rotOrbitPointList.Length; i++)
-                rotOrbitPointList[i].Color = Color.White;
+            for (int i = 0; i < RotationPlanePointList.Length; i++)
+                RotationPlanePointList[i].Color = Color.White;
         }
     }
 }
