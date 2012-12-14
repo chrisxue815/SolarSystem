@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Skybox.cs" />
     <Compile Include="Text3D.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="Satellite.cs" />

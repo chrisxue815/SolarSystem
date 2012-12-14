@@ -13,13 +13,11 @@ namespace SolarSystem
         public Sun Sun { get; set; }
         public Earth Earth { get; set; }
         public Moon Moon { get; set; }
+        public Skybox Skybox { get; set; }
         public List<GameEntity> Children { get; private set; }
 
         public GraphicsDeviceManager Graphics { get; private set; }
         public SpriteBatch SpriteBatch { get; private set; }
-
-        public Model model;
-        public Texture2D texture;
 
         private SoundEffect soundEffect;
         private SoundEffectInstance soundEffectIns;
@@ -50,7 +48,9 @@ namespace SolarSystem
             Sun = new Sun(0, 0, 0);
             Earth = new Earth();
             Moon = new Moon();
+            Skybox = new Skybox();
 
+            Children.Add(Skybox);
             Children.Add(Sun);
             Children.Add(Earth);
             Children.Add(Moon);
@@ -64,9 +64,6 @@ namespace SolarSystem
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-
-            model = Content.Load<Model>(@"Models\Skybox");
-            texture = Content.Load<Texture2D>(@"Textures\space");
 
             soundEffect = Content.Load<SoundEffect>(@"Sound\sound");
             soundEffectIns = soundEffect.CreateInstance();
@@ -116,31 +113,6 @@ namespace SolarSystem
             GraphicsDevice.Clear(Color.Black);
 
             SpriteBatch.Begin();
-
-            //================ Using Skybox to add background ==============//
-            GraphicsDevice.DepthStencilState = DepthStencilState.None;
-
-            var skytransforms = new Matrix[model.Bones.Count];
-            model.CopyAbsoluteBoneTransformsTo(skytransforms);
-
-            foreach (var mesh in model.Meshes)
-            {
-                // Set mesh orientation, and camera projection
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.TextureEnabled = true;
-                    effect.Texture = texture;
-                    effect.AmbientLightColor = new Vector3(1, 1, 1);
-                    effect.World = skytransforms[mesh.ParentBone.Index]*Matrix.CreateScale(2000.0f)*
-                                   Matrix.CreateTranslation(Camera.Position);
-                    //effect.World = skytransforms[mesh.ParentBone.Index] * Matrix.CreateScale(2000.0f) * RotationMatrix * Matrix.CreateTranslation(Camera.Position);
-                    effect.View = Camera.View;
-                    effect.Projection = Camera.Projection;
-                }
-
-                mesh.Draw();
-            }
-            //===================== End of Using Skybox ==============//
 
             var dt = (float) gameTime.ElapsedGameTime.TotalDays*Setting.Speed;
 
