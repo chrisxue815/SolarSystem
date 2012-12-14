@@ -8,6 +8,7 @@ namespace SolarSystem
     public class Monitor : GameEntity
     {
         private SpriteFont Font { get; set; }
+        private SpriteFont Font2 { get; set; }
         private List<string> Info { get; set; }
         private List<string> Help { get; set; }
         private List<string> Speed { get; set; }
@@ -54,13 +55,14 @@ namespace SolarSystem
             Help.Add("4: Arctic");
             Help.Add("5: Look up to the sky");
             Help.Add("");
-            Help.Add("Left-click: launch a satellite");
-            Help.Add("Right-click: remove all satellites");
+            Help.Add("L-click: Launch a satellite");
+            Help.Add("R-click: Remove satellites");
         }
 
         public override void LoadContent()
         {
             Font = Game.Content.Load<SpriteFont>(@"Fonts\font1");
+            Font2 = Game.Content.Load<SpriteFont>(@"Fonts\font2");
             Vernal.Model = Game.Content.Load<Model>(@"Models\vernal");
             Summer.Model = Game.Content.Load<Model>(@"Models\summer");
             Autumnal.Model = Game.Content.Load<Model>(@"Models\autumnal");
@@ -153,7 +155,7 @@ namespace SolarSystem
             }
 
             var runningSpeed = string.Format("Speed: x{0:N0} ({1})", Game.Setting.Speed, relativeSpeed);
-            Game.SpriteBatch.DrawString(Font, runningSpeed, new Vector2(630, 10), Color.White);
+            Game.SpriteBatch.DrawString(Font, runningSpeed, new Vector2(580, 10), Color.White);
 
             pos = new Vector2(1120, 10);
             Game.SpriteBatch.DrawString(Font, "H: Help", pos, Color.White);
@@ -162,7 +164,7 @@ namespace SolarSystem
                 foreach (var help in Help)
                 {
                     pos += new Vector2(0, 20);
-                    Game.SpriteBatch.DrawString(Font, help, pos, Color.White);
+                    Game.SpriteBatch.DrawString(Font2, help, pos, Color.White);
                 }
             }
         }
