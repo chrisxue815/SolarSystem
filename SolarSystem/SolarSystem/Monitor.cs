@@ -50,10 +50,11 @@ namespace SolarSystem
             Help.Add("K: Moon  rotation   plane");
             Help.Add("");
             Help.Add("1: Overlook");
-            Help.Add("2: Side - sunrise");
-            Help.Add("3: Side - sunset");
-            Help.Add("4: Arctic");
-            Help.Add("5: Look up to the sky");
+            Help.Add("2: Axial tilt");
+            Help.Add("3: Side - sunrise");
+            Help.Add("4: Side - sunset");
+            Help.Add("5: Arctic");
+            Help.Add("6: Look up to the sky");
             Help.Add("");
             Help.Add("L-click: Launch a satellite");
             Help.Add("R-click: Remove satellites");

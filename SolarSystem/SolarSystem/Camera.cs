@@ -36,24 +36,25 @@ namespace SolarSystem
                 perspectiveChanged = true;
             }
 
-            // Camera's side view of the Earth - sunrise
+            // Obliquity of the ecliptic
             if (perspective == 2)
             {
-                
+                Target = Game.Earth.Position;
+                Up = Vector3.Up;
+
+                Position = Game.Earth.Position + Vector3.Backward * 60;
+
+                perspectiveChanged = true;
             }
 
+            // Camera's side view of the Earth - sunrise
             if (perspective == 3)
-            {
-                
-            }
-
-            if (perspective == 4)
             {
                 Target = Game.Earth.Position;
                 Up = Game.Earth.Up;
 
                 var toSun = Game.Sun.Position - Game.Earth.Position;
-                var earthLeft = Vector3.Cross(toSun, Game.Earth.Up);
+                var earthLeft = Vector3.Cross(toSun, Up);
                 earthLeft.Normalize();
 
                 Position = Game.Earth.Position + earthLeft * 60;
@@ -62,13 +63,13 @@ namespace SolarSystem
             }
 
             // Camera's side view of the Earth - sunset
-            if (perspective == 5)
+            if (perspective == 4)
             {
                 Target = Game.Earth.Position;
                 Up = Game.Earth.Up;
 
                 var toSun = Game.Sun.Position - Game.Earth.Position;
-                var earthRight = Vector3.Cross(Game.Earth.Up, toSun);
+                var earthRight = Vector3.Cross(Up, toSun);
                 earthRight.Normalize();
 
                 Position = Game.Earth.Position + earthRight * 60;
@@ -77,7 +78,7 @@ namespace SolarSystem
             }
 
             // Camera's view from the Arctic
-            if (perspective == 6)
+            if (perspective == 5)
             {
                 var earth = Game.Earth;
 
@@ -89,7 +90,7 @@ namespace SolarSystem
             }
 
             // Camera's view on the Earth - look up to the sky
-            if (perspective == 7)
+            if (perspective == 6)
             {
                 var earth = Game.Earth;
 

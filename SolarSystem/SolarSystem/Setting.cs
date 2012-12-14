@@ -76,9 +76,6 @@ namespace SolarSystem
                     case Keys.D6:
                         Perspective = 6;
                         break;
-                    case Keys.D7:
-                        Perspective = 7;
-                        break;
                     case Keys.H:
                         ShowHelp = !ShowHelp;
                         break;
