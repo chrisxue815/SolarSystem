@@ -17,7 +17,7 @@ namespace SolarSystem
         {
             Position = new Vector3(0, 100, 200);
             Target = new Vector3(0, 0, 20);
-            Up = new Vector3(0, 1, 0);
+            Up = Vector3.Cross(Vector3.Right, Target - Position);
 
             Calculate();
         }
@@ -30,7 +30,7 @@ namespace SolarSystem
             {
                 Position = new Vector3(0, 100, 200);
                 Target = new Vector3(0, 0, 20);
-                Up = new Vector3(0, 1, 0);
+                Up = Vector3.Cross(Vector3.Right, Target - Position);
 
                 perspectiveChanged = true;
             }
