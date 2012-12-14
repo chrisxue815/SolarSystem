@@ -103,20 +103,21 @@ namespace SolarSystem
 
         public override void Draw(float dt)
         {
+            const float piOver8 = MathHelper.PiOver2/4;
             var angle = Game.Earth.Revolution;
-            if (angle < MathHelper.PiOver4 / 2)
+            if (angle > 0 && angle < piOver8)
             {
                 Vernal.Draw(dt);
             }
-            else if (Math.Abs(angle - MathHelper.PiOver4) < 1)
+            else if (angle > MathHelper.PiOver2 && angle < piOver8 * 5)
             {
                 Summer.Draw(dt);
             }
-            else if (Math.Abs(angle - MathHelper.PiOver2) < 1)
+            else if (angle > MathHelper.Pi && angle < piOver8 * 9)
             {
                 Autumnal.Draw(dt);
             }
-            else if (Math.Abs(angle - MathHelper.PiOver4*3) < 1)
+            else if (angle > MathHelper.PiOver2 * 3 && angle < piOver8 * 13)
             {
                 Winter.Draw(dt);
             }
