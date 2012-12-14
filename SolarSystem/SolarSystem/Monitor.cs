@@ -44,10 +44,10 @@ namespace SolarSystem
             Help.Add("Down: Slowdown");
             Help.Add("Space: Pause");
             Help.Add("");
-            Help.Add("P: Earth revolution orbit");
-            Help.Add("O: Earth rotation   orbit");
-            Help.Add("L: Moon  revolution orbit");
-            Help.Add("K: Moon  rotation   orbit");
+            Help.Add("P: Earth revolution plane");
+            Help.Add("O: Earth rotation   plane");
+            Help.Add("L: Moon  revolution plane");
+            Help.Add("K: Moon  rotation   plane");
             Help.Add("");
             Help.Add("1: Overlook");
             Help.Add("2: Side - sunrise");
